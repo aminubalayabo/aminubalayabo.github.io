@@ -3,12 +3,3 @@ logo: docs/assets/aminu_pic_24.jpg
 description: Teacher | Content Creator
 #show_downloads: true
 theme: jekyll-theme-minimal
-<div class="menu">
-                <ul>
-                    <li><a href="#">HOME</a></li>
-                    <li><a href="#">ABOUT</a></li>
-                    <li><a href="#">SERVICE</a></li>
-                    <li><a href="#">DESIGN</a></li>
-                    <li><a href="#">CONTACT</a></li>
-                </ul>
-            </div>
