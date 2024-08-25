@@ -10,7 +10,9 @@
 - Links
   
 #Education
--Some University
+- Some University
+- Usmanu Danfodiyo University, Sokoto
+- Zamfara State University, Mafara
 
 #Work History
 - WorkSpace 1
