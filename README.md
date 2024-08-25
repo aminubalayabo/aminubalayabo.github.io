@@ -1,6 +1,6 @@
 # aminubalayabo.github.io
 
-##Projects
+#Projects
 ###SOBAS
 - Description - School of Basic And Advanced Studies
 - [Upload](https://script.google.com/macros/s/AKfycbzYZcARpHUnWDOkUAkCzXZR_CVZfxUOFajYGZQEmUPp/dev)
