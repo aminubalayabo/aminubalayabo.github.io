@@ -2,7 +2,7 @@
 
 ##Projects
 ###SOBAS
-- Description - 
+- Description - School of Basic And Advanced Studies
 - [Upload]()
   
 ###Cooperative
