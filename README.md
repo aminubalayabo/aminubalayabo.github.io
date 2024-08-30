@@ -15,7 +15,7 @@
 - Usmanu Danfodiyo University, Sokoto
 - Zamfara State University, Mafara
 - [Click](moveable_toothpick.html)
-- [View Results](SOBAS/index.html)
+- [View Results](index.html)
 
 #Work History
 - WorkSpace 1
