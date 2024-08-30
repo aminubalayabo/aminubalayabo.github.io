@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="flex items-center justify-center h-screen bg-gray-100">
+    <div class="bg-white p-6 rounded shadow-md w-96">
+        <h2 class="text-xl font-bold mb-4">Student Login</h2>
+        <input type="text" id="username" placeholder="Username" class="border p-2 mb-4 w-full" />
+        <input type="password" id="password" placeholder="Admission Number" class="border p-2 mb-4 w-full" />
+        <button onclick="login()" class="bg-blue-500 text-white p-2 rounded w-full">Login</button>
+        <div id="result" class="mt-4"></div>
+    </div>
+
+    <script>
+        const studentsDetails = [
+            { serial: 1, username: "student1", password: "12345", name: "John Doe" },
+            { serial: 2, username: "student2", password: "67890", name: "Jane Smith" }
+        ];
+
+        const studentsScores = [
+            { serial: 1, admissionNumber: "12345", name: "John Doe", sex: "M", state: "State1", LGA: "LGA1", Biology: 75, Chemistry: 80, English: 85, Mathematics: 90, Physics: 70 },
+            { serial: 2, admissionNumber: "67890", name: "Jane Smith", sex: "F", state: "State2", LGA: "LGA2", Biology: 88, Chemistry: 92, English: 78, Mathematics: 85, Physics: 80 }
+        ];
+
+        function login() {
+            const username = document.getElementById("username").value;
+            const password = document.getElementById("password").value;
+
+            const studentDetail = studentsDetails.find(student => student.username === username && student.password === password);
+            if (studentDetail) {
+                const studentScores = studentsScores.find(student => student.admissionNumber === password);
+                if (studentScores) {
+                    const totalScore = studentScores.Biology + studentScores.Chemistry + studentScores.English + studentScores.Mathematics + studentScores.Physics;
+                    const averageScore = totalScore / 5;
+
+                    document.getElementById("result").innerHTML = `
+                        <h3 class="font-bold mt-4">Scores for ${studentScores.name}</h3>
+                        <p>Biology: ${studentScores.Biology}</p>
+                        <p>Chemistry: ${studentScores.Chemistry}</p>
+                        <p>English: ${studentScores.English}</p>
+                        <p>Mathematics: ${studentScores.Mathematics}</p>
+                        <p>Physics: ${studentScores.Physics}</p>
+                        <p>Total Score: ${totalScore}</p>
+                        <p>Average Score: ${averageScore.toFixed(2)}</p>
+                    `;
+                } else {
+                    document.getElementById("result").innerText = "No scores found for this admission number.";
+                }
+            } else {
+                document.getElementById("result").innerText = "Invalid username or password.";
+            }
+        }
+    </script>
+</body>
+</html>
