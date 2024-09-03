@@ -8,8 +8,8 @@
         body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
         #loginForm, #results { margin-bottom: 20px; }
         input, button { margin: 5px 0; }
-/*         table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; } */
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
         img { position: center; margin-left: 200px; }
     </style>
@@ -19,23 +19,26 @@
     <h2 >SCHOOL OF BASIC AND ADVANCED STUDIES </h2>
     <h3>2023/2024 Academic Session Results</h3>
     <div id="loginForm">
+        <cnter>
         <input type="text" id="username" placeholder="Username" required><br>
         <input type="password" id="password" placeholder="Password" required><br>
         <button onclick="login()">Login</button>
+            </cnter>
     </div>
     <div id="results" style="display:none;">
         <h2>Your Results</h2>
         <p id="studentName"></p>
         <table id="scoresTable" width: 100%; border-collapse: collapse;>
             <tr>
-                <th border: 1px solid #ddd; padding: 8px; text-align: left; >Subject</th>
-                <th border: 1px solid #ddd; padding: 8px; text-align: left; >Score</th>
+                <th>Subject</th>
+                <th>Score</th>
             </tr>
         </table>
         <p id="totalScore"></p>
         <p id="averageScore"></p>
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
+     <a href="#" id="logoutLink">Logout</a>
     </div>
 
     <script>
