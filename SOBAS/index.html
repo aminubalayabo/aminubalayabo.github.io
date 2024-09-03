@@ -34,7 +34,7 @@
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
     </div>
-
+       <a href="#" id="logoutLink">Logout</a>
     <script>
         async function login() {
             const username = document.getElementById('username').value;
@@ -86,6 +86,16 @@
             document.getElementById('aggregateScore').textContent = `Aggregate Score: ${aggregate.toFixed(2)}`;
             document.getElementById('remarks').textContent = `Remarks: ${remarks}`;
         }
+     document.getElementById('logoutLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('resultDisplay').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+});
+
+
+        
     </script>
 </body>
 </html>
