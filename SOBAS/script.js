@@ -1,16 +1,28 @@
 let studentData = [];
+  async function login() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            
+            try {
+                const response = await fetch('https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/main/SOBAS/students_results.txt');
+                const data = await response.text();
+                const lines = data.split('\n');
+                
+                for (let line of lines) {
+                    const [user, pass, ...scores] = line.split(',');
+                    if (user === username && pass === password) {
+                        displayResults(user, scores);
+                        return;
+                    }
+                }
+                
+                alert('Invalid username or password');
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Invalid username or password');
+            }
+        }
 
-fetch('get_student_data.php')
-    .then(response => response.json())
-    .then(data => {
-        studentData = data;
-        document.getElementById('loadingMessage').style.display = 'none';
-        document.getElementById('loginForm').style.display = 'block';
-    })
-    .catch(error => {
-        console.error('Error:', error);
-        document.getElementById('loadingMessage').textContent = 'Error loading student data. Please try again later.';
-    });
 
 document.getElementById('loginForm').addEventListener('submit', function(e) {
     e.preventDefault();
