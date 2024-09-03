@@ -12,7 +12,7 @@
         table { width: 40%; border-collapse: collapse; style="margin: 0 auto;" }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; }
-        img { margin-left: 100px; }
+        img { margin-left: 50px; }
     </style>
 </head>
 <body>
@@ -74,7 +74,7 @@
             const numericScores = scores.map(Number);
             const total = numericScores.reduce((a, b) => a + b, 0);
             const average = total / numericScores.length;
-            const aggregate = Math.Round((total / 500) * 400);
+            const aggregate = (total / 500) * 400;
             const remarks = aggregate >= 160 ? 'Pass Matric' : 'Fail Matric';
 
             document.getElementById('loginForm').style.display = 'none';
