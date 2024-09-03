@@ -3,14 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Results</title>
+    <title>Student Login</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+/* body { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; } */
+        h1, h2, h3 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
+        /* h2 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; } */
+        form { margin-top: 50px; text-align: center; }
+        input { margin: 10px; padding: 5px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
+        
+        img { position: center; margin-left: 700px; }
+        /* time { font-size: 100%; font-weight: normal; font: inherit; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; vertical-align: baseline; } */
+        class.text-2xl { font-size: 200%; font-weight: normal; font: inherit; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; vertical-align: baseline; }
+        /*         body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
         #loginForm, #results { margin-bottom: 20px; }
         input, button { margin: 5px 0; }
-    </style>
+    </style> */
 </head>
 <body>
+    <table id="date-time"></table>
+    <tr>
+        <td><b id="current-date"; ></b> </td>
+        <td>;</td>
+        <td><b id="time" class="text-2xl";></b> </td>
+    </tr>
+</table>
+
+    <!-- <p id="current-date";></p> 
+    <p id="time" class="text-2xl";></p>  -->
+    <img src="udus.logo.jpg" />
     <h1>Student Results Portal</h1>
     <div id="loginForm">
         <input type="text" id="username" placeholder="Username" required>
