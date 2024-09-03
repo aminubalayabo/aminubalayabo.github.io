@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Login</title>
     <style>
-        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 0px; }
         h1, h2, h3 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
         #loginForm, #results { margin-top: 50px; text-align: center; }
         input, button { margin: 10px; padding: 5px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
@@ -27,8 +27,9 @@
 
     </div>
     <div id="results" style="display:none;">
-        <h2>Your Results</h2>
+        <div id="averageScore" style="display: none;"></div>
         <p id="studentName"></p>
+        <h2>Your Results</h2>
         <table id="scoresTable" width: 100%; border-collapse: collapse;>
             <tr>
                 <th>Subject</th>
