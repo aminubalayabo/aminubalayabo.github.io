@@ -1,7 +1,10 @@
 let studentData = [];
   async function login() {
-            const username = document.getElementById('username').value;
-            const password = document.getElementById('password').value;
+            document.getElementById('loginForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const username = document.getElementById('username').value;
+    const password = document.getElementById('password').value;
+    
             
             try {
                 const response = await fetch('https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/main/SOBAS/students_results.txt');
@@ -24,11 +27,7 @@ let studentData = [];
         }
 
 
-document.getElementById('loginForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const username = document.getElementById('username').value;
-    const password = document.getElementById('password').value;
-    
+
 
     
             
