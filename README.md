@@ -9,7 +9,7 @@
 ###Cooperative
 - Description - 
 - [Click](https://script.google.com/macros/s/AKfycbz11_Bylx3amIqfC4yBbfNdDgQuJivNSayZ31nUxi14e2L8pnMaZ73DmUX5s_nBqmdq/exec)
-- [Click Here](SOBAS/student_login.py)
+- [Click Here](SOBAS/index.html)
   
 #Education
 - Some University
