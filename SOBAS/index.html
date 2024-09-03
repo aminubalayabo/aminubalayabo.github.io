@@ -76,6 +76,37 @@
             }
         }
 
+
+
+function updateTime() {  
+                const now = new Date();  
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
+                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
+            }  
+            setInterval(updateTime, 1000);  
+            window.onload = updateTime;
+        
+function displayDate() {  
+            const dateElement = document.getElementById('current-date');  
+            const today = new Date();  
+            dateElement.innerHTML = today.toLocaleDateString('en-US', {  
+                year: 'numeric',  
+                month: 'long',  
+                day: 'numeric'  
+            }); // Formats the date as "Month Day, Year"  
+        }
+
+function updateTime() {  
+                const now = new Date();  
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
+                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
+            }  
+            setInterval(updateTime, 1000);  
+            window.onload = updateTime;
+
+
+
+        
         function displayResults(name, scores) {
             const subjects = ['BIO', 'CHEM', 'ENG', 'MATHS', 'PHY'];
             const numericScores = scores.map(Number);
@@ -110,31 +141,7 @@ document.getElementById('logoutLink').addEventListener('click', function(e) {
     document.getElementById('password').value = '';
 });
 
-function updateTime() {  
-                const now = new Date();  
-                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
-                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
-            }  
-            setInterval(updateTime, 1000);  
-            window.onload = updateTime;
-        
-function displayDate() {  
-            const dateElement = document.getElementById('current-date');  
-            const today = new Date();  
-            dateElement.innerHTML = today.toLocaleDateString('en-US', {  
-                year: 'numeric',  
-                month: 'long',  
-                day: 'numeric'  
-            }); // Formats the date as "Month Day, Year"  
-        }
 
-function updateTime() {  
-                const now = new Date();  
-                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
-                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
-            }  
-            setInterval(updateTime, 1000);  
-            window.onload = updateTime;
      
 
         
