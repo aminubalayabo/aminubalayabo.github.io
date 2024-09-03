@@ -12,7 +12,7 @@
         table { width: 40%; border-collapse: collapse; style="margin: 0 auto;" }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: center; }
         th { background-color: #f2f2f2; }
-        img { margin-left: 50px; }
+        img { margin-left: 40px; }
     </style>
 </head>
 <body>
@@ -41,7 +41,7 @@
         <p id="averageScore"></p>
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
-     <a href="#" id="logoutLink">Logout</a>
+     <a href="https://aminubalayabo.github.io/SOBAS/index.html" id="logoutLink">Logout</a>
     </div>
 </cnter>
     <script>
@@ -75,7 +75,7 @@
             const total = numericScores.reduce((a, b) => a + b, 0);
             const average = total / numericScores.length;
             const aggregate = (total / 500) * 400;
-            const remarks = aggregate >= 160 ? 'Pass Matric' : 'Fail Matric';
+            const remarks = aggregate >= 160 ? 'Pass Matric' : 'Fail Matric!';
 
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('results').style.display = 'block';
