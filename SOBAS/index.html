@@ -36,16 +36,27 @@
         <button onclick="login()">Login</button>
     </div>
         
-    <div id="results" style="display:none;">
+    <div id="resultsDisplay" style="display:none;">
+            <div id="averageScore" style="display: none;"></div>
+        <h2> <div id="welcomeMessage" class="mt-4 hidden" style="color:red";></div></h2>
        <h3>Your Results are as Follows:</h3>
-        <p id="studentName"></p>
-        <p id="totalScore"></p>
-        <p id="averageScore"></p>
-        <p id="aggregateScore"></p>
-        <p id="remarks"></p>
+        <table id="resultsTable" border="1" style="margin: 0 auto;">
+            <tr>
+                <th>Subject</th>
+                <th>Score</th>
+            </tr>
+        </table>
+        <center>
+        <p>Total Score (500): <span id="totalScore"></span></p>
+        <!-- <p>Average Score: <span id="averageScore"></span></p> -->
+        <p>Aggregate Score (400): <span id="aggregateScore"></span></p>
+        <p>Remarks: <span id="remarks"></span></p>
+        
+        <a href="#" id="logoutLink">Logout</a>
     </div>
 </center>
     <script>
+let studentData = [];
         async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
@@ -82,7 +93,33 @@
             displayWelcomeMessage();  
         
             
+           const loginForm = document.getElementById('loginForm');  
+            const welcomeMessage = document.getElementById('welcomeMessage');  
+
+            loginForm.addEventListener('submit', function(event) {  
+                event.preventDefault();  
+                const username = document.getElementById('username').value;  
+                localStorage.setItem('username', username);  
+                displayWelcomeMessage();  
+            });  
+
+
             
+            function displayWelcomeMessage() {  
+                const username = localStorage.getItem('username');  
+                if (username) {  
+                    welcomeMessage.textContent = `Welcome, ${username}!`;  
+                    welcomeMessage.classList.remove('hidden');  
+                }  
+            }  
+
+            // Display welcome message if user is already logged in  
+            displayWelcomeMessage();  
+        
+            
+            
+
+                   
 
           
             function updateTime() {  
@@ -95,38 +132,44 @@
 
 
         
-        function displayResults(name, scores) {
-            const subjects = ['BIO', 'CHEM', 'ENG', 'MATHS', 'PHY'];
-            const numericScores = scores.map(Number);
-            const total = numericScores.reduce((a, b) => a + b, 0);
-            const average = total / numericScores.length;
-            const aggregateScore = Math.round(total / 500*400);
+function displayResults(scores) {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('resultDisplay').style.display = 'block';
+
+    const table = document.getElementById('resultsTable');
+    table.innerHTML = '<tr><th>Subject</th><th>Score</th></tr>'; // Clear previous results
+    let totalScore = 0;
+
+    for (const [subject, score] of Object.entries(scores)) {
+        const row = table.insertRow();
+        row.insertCell(0).textContent = subject;
+        row.insertCell(1).textContent = score;
+        totalScore += score;
+    }
+
+    const averageScore = totalScore / Object.keys(scores).length;
+    const aggregateScore = Math.round(totalScore / 500*400);
     if (aggregateScore > 159) {
         remarks = "Pass Matric";
         } else {
         remarks = "Fail Matric!"
         } 
+    document.getElementById('totalScore').textContent = totalScore;
+    document.getElementById('averageScore').textContent = averageScore.toFixed(2);
+    document.getElementById('aggregateScore').textContent = aggregateScore.toFixed(3);
+    document.getElementById('remarks').textContent = remarks;
+}
 
-
-            
-            document.getElementById('loginForm').style.display = 'none';
-            document.getElementById('results').style.display = 'block';
-            document.getElementById('studentName').textContent = `Name: ${name}`;
-            document.getElementById('totalScore').textContent = `Total Score (500): ${total}`;
-            document.getElementById('averageScore').textContent = `Average Score: ${average.toFixed(2)}`;
-            document.getElementById('aggregateScore').textContent = 'Aggregate Score (400): $(aggregateScore.toFixed(2))';
-            document.getElementById('remarks').textContent = 'Remarks: $(remarks.toFixed(2))';
-        }
     document.getElementById('logoutLink').addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('results').style.display = 'none';
+    document.getElementById('resultDisplay').style.display = 'none';
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
 });
     
     
-    
+<marquee><h3><span class="orange" style="color:rgb(221, 135, 222)";> For enquiries, please send a mail to aminubala@gmail.com! Thank you </span></h3></marquee>    
     </script>
     <script>  
         // Function to display current date  
