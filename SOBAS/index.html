@@ -69,6 +69,31 @@
             }
         }
 
+            function displayWelcomeMessage() {  
+                const username = localStorage.getItem('username');  
+                if (username) {  
+                    welcomeMessage.textContent = `Welcome, ${username}!`;  
+                    welcomeMessage.classList.remove('hidden');  
+                }  
+            }  
+
+            // Display welcome message if user is already logged in  
+            displayWelcomeMessage();  
+        
+            
+            
+
+          
+            function updateTime() {  
+                const now = new Date();  
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
+                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
+            }  
+            setInterval(updateTime, 1000);  
+            window.onload = updateTime;
+
+
+        
         function displayResults(name, scores) {
             const subjects = ['BIO', 'CHEM', 'ENG', 'MATHS', 'PHY'];
             const numericScores = scores.map(Number);
@@ -81,6 +106,24 @@
             document.getElementById('totalScore').textContent = `Total Score: ${total}`;
             document.getElementById('averageScore').textContent = `Average Score: ${average.toFixed(2)}`;
         }
+    </script>
+    <script>  
+        // Function to display current date  
+        function displayDate() {  
+            const dateElement = document.getElementById('current-date');  
+            const today = new Date();  
+            dateElement.innerHTML = today.toLocaleDateString('en-US', {  
+                year: 'numeric',  
+                month: 'long',  
+                day: 'numeric'  
+            }); // Formats the date as "Month Day, Year"  
+        }  
+        
+        // Call the function to display the date when the page loads  
+        window.onload = function() {  
+            displayDate();  
+            
+        };  
     </script>
 </body>
 </html>
