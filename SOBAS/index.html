@@ -41,7 +41,7 @@
         <p id="averageScore"></p>
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
-     <a href="#" id="logoutLink">Logout</a>
+     <a href="SOBAS/index.html" id="logoutLink">Logout</a>
     </div>
 </cnter>
     <script>
@@ -95,13 +95,13 @@
             document.getElementById('aggregateScore').textContent = `Aggregate Score (400): ${aggregate.toFixed(2)}`;
             document.getElementById('remarks').textContent = `Remarks: ${remarks}`;
         }
- document.getElementById('logoutLink').addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('results').style.display = 'none';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-});
+//  document.getElementById('logoutLink').addEventListener('click', function(e) {
+//     e.preventDefault();
+//     document.getElementById('loginForm').style.display = 'block';
+//     document.getElementById('results').style.display = 'none';
+//     document.getElementById('username').value = '';
+//     document.getElementById('password').value = '';
+// });
         
     </script>
 </body>
