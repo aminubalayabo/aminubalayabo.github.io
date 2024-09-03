@@ -3,61 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Login</title>
+    <title>Student Results</title>
     <style>
-
-        h1, h2, h3 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
-
-        form { margin-top: 50px; text-align: center; }
-        input { margin: 10px; padding: 5px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
-        
-        img { position: center; margin-left: 600px; }
-
-        class.text-2xl { font-size: 200%; font-weight: normal; font: inherit; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; vertical-align: baseline; }
-
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
+        #loginForm, #results { margin-bottom: 20px; }
+        input, button { margin: 5px 0; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+        th { background-color: #f2f2f2; }
     </style>
 </head>
 <body>
-    <table id="date-time"></table>
-    <tr>
-        <td><b id="current-date"; ></b> </td>
-        <td>;</td>
-        <td><b id="time" class="text-2xl";></b> </td>
-    </tr>
-</table>
-
-    <img src="udus.logo.jpg" />
-    <h2 >SCHOOL OF BASIC AND ADVANCED STUDIES </h2>
-    <h3>2023/2024 Academic Session Results</h3>
-    <center>
+    <h1>Student Results Portal</h1>
     <div id="loginForm">
-        <input type="text" id="username" placeholder="Username" required><br>
-        <input type="password" id="password" placeholder="Password" required><br>
-        <button onclick="submit()">Login</button>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="login()">Login</button>
     </div>
-        
-    <div id="resultsDisplay" style="display:none;">
-            <div id="averageScore" style="display: none;"></div>
-        <h2> <div id="welcomeMessage" class="mt-4 hidden" style="color:red";></div></h2>
-       <h3>Your Results are as Follows:</h3>
-        <table id="resultsTable" border="1" style="margin: 0 auto;">
+    <div id="results" style="display:none;">
+        <h2>Your Results</h2>
+        <p id="studentName"></p>
+        <table id="scoresTable">
             <tr>
                 <th>Subject</th>
                 <th>Score</th>
             </tr>
         </table>
-        <center>
-        <p>Total Score (500): <span id="totalScore"></span></p>
-        <!-- <p>Average Score: <span id="averageScore"></span></p> -->
-        <p>Aggregate Score (400): <span id="aggregateScore"></span></p>
-        <p>Remarks: <span id="remarks"></span></p>
-        
-        <a href="#" id="logoutLink">Logout</a>
+        <p id="totalScore"></p>
+        <p id="averageScore"></p>
+        <p id="aggregateScore"></p>
+        <p id="remarks"></p>
     </div>
-</center>
+
     <script>
-let studentData = [];
-        async function submit() {
+        async function login() {
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             
@@ -68,8 +47,8 @@ let studentData = [];
                 
                 for (let line of lines) {
                     const [user, pass, ...scores] = line.split(',');
-                    if (username === username && password === password) {
-                        displayResults(student.scores);
+                    if (user === username && pass === password) {
+                        displayResults(user, scores);
                         return;
                     }
                 }
@@ -77,117 +56,36 @@ let studentData = [];
                 alert('Invalid username or password');
             } catch (error) {
                 console.error('Error:', error);
-                alert('Invalid username or password');
+                alert('An error occurred while fetching data');
             }
         }
 
-            function displayWelcomeMessage() {  
-                const username = localStorage.getItem('username');  
-                if (username) {  
-                    welcomeMessage.textContent = `Welcome, ${username}!`;  
-                    welcomeMessage.classList.remove('hidden');  
-                }  
-            }  
+        function displayResults(name, scores) {
+            const subjects = ['BIO', 'CHEM', 'ENG', 'MATHS', 'PHY'];
+            const numericScores = scores.map(Number);
+            const total = numericScores.reduce((a, b) => a + b, 0);
+            const average = total / numericScores.length;
+            const aggregate = (total / 500) * 400;
+            const remarks = aggregate >= 160 ? 'Passed' : 'Failed';
 
-            // Display welcome message if user is already logged in  
-            displayWelcomeMessage();  
-        
-            
-           const loginForm = document.getElementById('loginForm');  
-            const welcomeMessage = document.getElementById('welcomeMessage');  
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('results').style.display = 'block';
+            document.getElementById('studentName').textContent = `Name: ${name}`;
 
-            loginForm.addEventListener('submit', function(event) {  
-                event.preventDefault();  
-                const username = document.getElementById('username').value;  
-                localStorage.setItem('username', username);  
-                displayWelcomeMessage();  
-            });  
+            const table = document.getElementById('scoresTable');
+            for (let i = 0; i < subjects.length; i++) {
+                const row = table.insertRow(-1);
+                const subjectCell = row.insertCell(0);
+                const scoreCell = row.insertCell(1);
+                subjectCell.textContent = subjects[i];
+                scoreCell.textContent = numericScores[i];
+            }
 
-
-            
-            function displayWelcomeMessage() {  
-                const username = localStorage.getItem('username');  
-                if (username) {  
-                    welcomeMessage.textContent = `Welcome, ${username}!`;  
-                    welcomeMessage.classList.remove('hidden');  
-                }  
-            }  
-
-            // Display welcome message if user is already logged in  
-            displayWelcomeMessage();  
-        
-            
-            
-
-                   
-
-          
-            function updateTime() {  
-                const now = new Date();  
-                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
-                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
-            }  
-            setInterval(updateTime, 1000);  
-            window.onload = updateTime;
-
-
-        
-function displayResults(scores) {
-    document.getElementById('loginForm').style.display = 'none';
-    document.getElementById('resultDisplay').style.display = 'block';
-
-    const table = document.getElementById('resultsTable');
-    table.innerHTML = '<tr><th>Subject</th><th>Score</th></tr>'; // Clear previous results
-    let totalScore = 0;
-
-    for (const [subject, score] of Object.entries(scores)) {
-        const row = table.insertRow();
-        row.insertCell(0).textContent = subject;
-        row.insertCell(1).textContent = score;
-        totalScore += score;
-    }
-
-    const averageScore = totalScore / Object.keys(scores).length;
-    const aggregateScore = Math.round(totalScore / 500*400);
-    if (aggregateScore > 159) {
-        remarks = "Pass Matric";
-        } else {
-        remarks = "Fail Matric!"
-        } 
-    document.getElementById('totalScore').textContent = totalScore;
-    document.getElementById('averageScore').textContent = averageScore.toFixed(2);
-    document.getElementById('aggregateScore').textContent = aggregateScore.toFixed(3);
-    document.getElementById('remarks').textContent = remarks;
-}
-
-    document.getElementById('logoutLink').addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('resultDisplay').style.display = 'none';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-});
-    
-    
-<marquee><h3><span class="orange" style="color:rgb(221, 135, 222)";> For enquiries, please send a mail to aminubala@gmail.com! Thank you </span></h3></marquee>    
-    </script>
-    <script>  
-        // Function to display current date  
-        function displayDate() {  
-            const dateElement = document.getElementById('current-date');  
-            const today = new Date();  
-            dateElement.innerHTML = today.toLocaleDateString('en-US', {  
-                year: 'numeric',  
-                month: 'long',  
-                day: 'numeric'  
-            }); // Formats the date as "Month Day, Year"  
-        }  
-        
-        // Call the function to display the date when the page loads  
-        window.onload = function() {  
-            displayDate();  
-            
-        };  
+            document.getElementById('totalScore').textContent = `Total Score: ${total}`;
+            document.getElementById('averageScore').textContent = `Average Score: ${average.toFixed(2)}`;
+            document.getElementById('aggregateScore').textContent = `Aggregate Score: ${aggregate.toFixed(2)}`;
+            document.getElementById('remarks').textContent = `Remarks: ${remarks}`;
+        }
     </script>
 </body>
 </html>
