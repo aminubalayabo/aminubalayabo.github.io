@@ -8,10 +8,10 @@
         body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
         #loginForm, #results { margin-bottom: 20px; }
         input, button { margin: 5px 0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
+/*         table { width: 100%; border-collapse: collapse; }
+        th, td { border: 1px solid #ddd; padding: 8px; text-align: left; } */
         th { background-color: #f2f2f2; }
-        img { position: center; margin-left: 500px; }
+        img { position: center; margin-left: 400px; }
     </style>
 </head>
 <body>
@@ -26,10 +26,10 @@
     <div id="results" style="display:none;">
         <h2>Your Results</h2>
         <p id="studentName"></p>
-        <table id="scoresTable">
+        <table id="scoresTable" width: 100%; border-collapse: collapse;>
             <tr>
-                <th>Subject</th>
-                <th>Score</th>
+                <th border: 1px solid #ddd; padding: 8px; text-align: left; >Subject</th>
+                <th border: 1px solid #ddd; padding: 8px; text-align: left; >Score</th>
             </tr>
         </table>
         <p id="totalScore"></p>
