@@ -3,7 +3,7 @@
 #Projects
 ###SOBAS
 - Result Check: School of Basic And Advanced Studies, Usmanu Damfodiyo University, Sokoto.
-- [Click Here to Login and Check Your Results for 2023/2024 Academic Session](SOBAS/index)
+- [Click Here to Login and Check Your Results for 2023/2024 Academic Session](SOBAS/index.html)
 - [Website](website.html) 
   
 ###Cooperative
