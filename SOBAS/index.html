@@ -74,7 +74,7 @@
             const numericScores = scores.map(Number);
             const total = numericScores.reduce((a, b) => a + b, 0);
             const average = total / numericScores.length;
-            const aggregate = (total / 500) * 400;
+            const aggregate = Math.Round((total / 500) * 400);
             const remarks = aggregate >= 160 ? 'Pass Matric' : 'Fail Matric';
 
             document.getElementById('loginForm').style.display = 'none';
