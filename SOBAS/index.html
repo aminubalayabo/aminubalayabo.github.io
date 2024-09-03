@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Login</title>
+    <style>
+        /* body { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; } */
+        h1, h2, h3 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
+        /* h2 { font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; } */
+        form { margin-top: 50px; text-align: center; }
+        input { margin: 10px; padding: 5px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
+        
+        img { position: center; margin-left: 700px; }
+        /* time { font-size: 100%; font-weight: normal; font: inherit; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; vertical-align: baseline; } */
+        class.text-2xl { font-size: 200%; font-weight: normal; font: inherit; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; vertical-align: baseline; }
+        
+    </style>
+    <!-- <script src="https://cdn.tailwindcss.com"></script> -->
+    
+</head>
+<body>
+    
+
+
+    <table id="date-time"></table>
+    <tr>
+        <td><b id="current-date"; ></b> </td>
+        <td>;</td>
+        <td><b id="time" class="text-2xl";></b> </td>
+    </tr>
+</table>
+
+    <!-- <p id="current-date";></p> 
+    <p id="time" class="text-2xl";></p>  -->
+    <img src="udus.logo.jpg" />
+    <h2 >SCHOOL OF BASIC AND ADVANCED STUDIES </h2>
+    <h3>2023/2024 Academic Session Results</h3>
+    <div id="loadingMessage">Loading student data...</div>
+    <form id="loginForm" style="display:none;">
+        <input type="text" id="username" placeholder="Username" required><br>
+        <input type="password" id="password" placeholder="Password" required><br>
+        <input type="submit" value="Login">
+    </form>
+      
+
+    
+
+    <div id="resultDisplay" style="display:none;">
+        <div id="averageScore" style="display: none;"></div>
+        <h2> <div id="welcomeMessage" class="mt-4 hidden" style="color:red";></div></h2>
+         
+        
+        <h3>Your Results are as Follows:</h3>
+        <table id="resultsTable" border="1" style="margin: 0 auto;">
+            <tr>
+                <th>Subject</th>
+                <th>Score</th>
+            </tr>
+        </table>
+        <center>
+        <p>Total Score (500): <span id="totalScore"></span></p>
+        <!-- <p>Average Score: <span id="averageScore"></span></p> -->
+        <p>Aggregate Score (400): <span id="aggregateScore"></span></p>
+        <p>Remarks: <span id="remarks"></span></p>
+        
+        <a href="#" id="logoutLink">Logout</a>
+    </center>
+    </div>
+    <marquee><h3><span class="orange" style="color:rgb(221, 135, 222)";> For enquiries, please send a mail to aminubala@gmail.com! Thank you </span></h3></marquee>
+    <script src="script.js"></script>
+    <script>  
+        // Function to display current date  
+        function displayDate() {  
+            const dateElement = document.getElementById('current-date');  
+            const today = new Date();  
+            dateElement.innerHTML = today.toLocaleDateString('en-US', {  
+                year: 'numeric',  
+                month: 'long',  
+                day: 'numeric'  
+            }); // Formats the date as "Month Day, Year"  
+        }  
+        
+        // Call the function to display the date when the page loads  
+        window.onload = function() {  
+            displayDate();  
+            
+        };  
+    </script>  
+</body>
+</html>
