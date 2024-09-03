@@ -35,7 +35,7 @@
         <input type="password" id="password" placeholder="Password" required><br>
         <button onclick="login()">Login</button>
     </div>
-        </center>
+        
     <div id="results" style="display:none;">
        <h3>Your Results are as Follows:</h3>
         <p id="studentName"></p>
@@ -44,7 +44,7 @@
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
     </div>
-
+</center>
     <script>
         async function login() {
             const username = document.getElementById('username').value;
@@ -112,10 +112,10 @@
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('results').style.display = 'block';
             document.getElementById('studentName').textContent = `Name: ${name}`;
-            document.getElementById('totalScore').textContent = `Total Score: ${total}`;
+            document.getElementById('totalScore').textContent = `Total Score (500): ${total}`;
             document.getElementById('averageScore').textContent = `Average Score: ${average.toFixed(2)}`;
-            document.getElementById('aggregateScore').textContent = aggregateScore.toFixed(3);
-            document.getElementById('remarks').textContent = remarks;
+            document.getElementById('aggregateScore').textContent = 'Aggregate Score (400): $(aggregateScore)';
+            document.getElementById('remarks').textContent = 'Remarks: $(remarks)';
         }
     document.getElementById('logoutLink').addEventListener('click', function(e) {
     e.preventDefault();
