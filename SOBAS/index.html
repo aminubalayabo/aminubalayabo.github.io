@@ -68,8 +68,8 @@ let studentData = [];
                 
                 for (let line of lines) {
                     const [user, pass, ...scores] = line.split(',');
-                    if (user === username && pass === password) {
-                        displayResults(user, scores);
+                    if (username === username && password === password) {
+                        displayResults(student.scores);
                         return;
                     }
                 }
