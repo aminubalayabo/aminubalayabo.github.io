@@ -13,7 +13,7 @@
         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
         th { background-color: #f2f2f2; }
-           img { position: center; margin-left: 700px; }
+           img { position: center; margin-left: 400px; }
     </style>
 </head>
 <body>
@@ -48,8 +48,9 @@
         <p id="averageScore"></p>
         <p id="aggregateScore"></p>
         <p id="remarks"></p>
+     <a href="#" id="logoutLink">Logout</a>
     </div>
-       <a href="#" id="logoutLink">Logout</a>
+      
     <script>
         async function login() {
             const username = document.getElementById('username').value;
@@ -101,14 +102,16 @@
             document.getElementById('aggregateScore').textContent = `Aggregate Score: ${aggregate.toFixed(2)}`;
             document.getElementById('remarks').textContent = `Remarks: ${remarks}`;
         }
-     document.getElementById('logoutLink').addEventListener('click', function(e) {
-    e.preventDefault();
-    document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('resultDisplay').style.display = 'none';
-    document.getElementById('username').value = '';
-    document.getElementById('password').value = '';
-});
 
+
+function updateTime() {  
+                const now = new Date();  
+                const options = { hour: '2-digit', minute: '2-digit', second: '2-digit' };  
+                document.getElementById('time').textContent = now.toLocaleTimeString(undefined, options);  
+            }  
+            setInterval(updateTime, 1000);  
+            window.onload = updateTime;
+        
 function displayDate() {  
             const dateElement = document.getElementById('current-date');  
             const today = new Date();  
@@ -126,7 +129,13 @@ function updateTime() {
             }  
             setInterval(updateTime, 1000);  
             window.onload = updateTime;
-
+     document.getElementById('logoutLink').addEventListener('click', function(e) {
+    e.preventDefault();
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('resultDisplay').style.display = 'none';
+    document.getElementById('username').value = '';
+    document.getElementById('password').value = '';
+});
         
     </script>
 </body>
