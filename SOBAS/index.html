@@ -10,9 +10,9 @@
         body { font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; }
         #loginForm, #results { margin-bottom: 20px; }
         input, button { margin: 10px; padding: 5px; font-family: "Trebuchet MS", Arial, Helvetica, sans-serif; text-align: center; }
-        table { width: 100%; border-collapse: collapse; }
+/*         table { width: 100%; border-collapse: collapse; }
         th, td { border: 1px solid #ddd; padding: 8px; text-align: left; }
-        th { background-color: #f2f2f2; }
+        th { background-color: #f2f2f2; } */
            img { position: center; margin-left: 400px; }
     </style>
 </head>
@@ -38,7 +38,7 @@
     <div id="results" style="display:none;">
         <h2>Your Results</h2>
         <p id="studentName"></p>
-        <table id="scoresTable">
+        <table id="scoresTable" border="1" style="margin: 0 auto;>
             <tr>
                 <th>Subject</th>
                 <th>Score</th>
@@ -129,13 +129,15 @@ function updateTime() {
             }  
             setInterval(updateTime, 1000);  
             window.onload = updateTime;
-     document.getElementById('logoutLink').addEventListener('click', function(e) {
+     
+});
+
+document.getElementById('logoutLink').addEventListener('click', function(e) {
     e.preventDefault();
     document.getElementById('loginForm').style.display = 'block';
-    document.getElementById('resultDisplay').style.display = 'none';
+    document.getElementById('results').style.display = 'none';
     document.getElementById('username').value = '';
     document.getElementById('password').value = '';
-});
         
     </script>
 </body>
