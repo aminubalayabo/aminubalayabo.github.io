@@ -43,3 +43,31 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+document.addEventListener('DOMContentLoaded', () => {
+    const loginForm = document.getElementById('student-login-form');
+
+    loginForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(loginForm);
+        
+        try {
+            const response = await fetch('/api/student-login', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                // Store the student data in session storage
+                sessionStorage.setItem('studentData', JSON.stringify(data));
+                // Redirect to the student dashboard
+                window.location.href = 'student-dashboard.html';
+            } else {
+                alert('Login failed. Please check your credentials and try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+});
