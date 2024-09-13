@@ -1,30 +1,25 @@
-<!DOCTYPE html>  
-<html lang="en">  
-<head>  
-    <meta charset="UTF-8">  
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
-    <title>Student Information System</title>  
-    <link rel="stylesheet" href="styles.css">  
-</head>  
-<body>  
-    <h1>Student Information System</h1>  
-    <div id="loginForm">  
-        <h2>Login</h2>  
-        <input type="text" id="username" placeholder="Username (Admission Number)">  
-        <input type="password" id="password" placeholder="Password">  
-        <button onclick="login()">Login</button>  
-    </div>  
-
-    <div id="studentDashboard" style="display:none;">  
-        <h2>Dashboard</h2>  
-        <button onclick="viewProfile()">View Profile</button>  
-        <button onclick="viewResults()">View Results</button>  
-    </div>  
-
-    <div id="resultsSummary" style="display:none;">  
-        <!-- Results Summary will be displayed here -->  
-    </div>  
-
-    <script src="script.js"></script>  
-</body>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Information System</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Student Information System</h1>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="#" id="student-registration">Student Registration</a></li>
+            <li><a href="#" id="student-login">Student Login</a></li>
+            <li><a href="#" id="admin-login">Admin Login</a></li>
+        </ul>
+    </nav>
+    <main id="main-content">
+        <!-- Content will be dynamically loaded here -->
+    </main>
+    <script src="script.js"></script>
+</body>
 </html>
