@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Registration</title>
+</head>
+<body>
+    <h2>Student Registration</h2>
+    <form action="register.php" method="POST" enctype="multipart/form-data">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+        
+        <label for="admission_number">Admission Number:</label>
+        <input type="text" id="admission_number" name="admission_number" required><br><br>
+        
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required><br><br>
+        
+        <label for="level">Level:</label>
+        <input type="text" id="level" name="level" required><br><br>
+        
+        <label for="session">Session:</label>
+        <input type="text" id="session" name="session" required><br><br>
+        
+        <label for="phone_number">Phone Number:</label>
+        <input type="tel" id="phone_number" name="phone_number" required><br><br>
+        
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        
+        <label for="passport">Passport Photo:</label>
+        <input type="file" id="passport" name="passport" accept="image/*" required><br><br>
+        
+        <!-- Add fields for courses (14 courses) -->
+        <?php for ($i = 1; $i <= 14; $i++): ?>
+            <h3>Course <?php echo $i; ?></h3>
+            <label for="course<?php echo $i; ?>code">Course <?php echo $i; ?> Code:</label>
+            <input type="text" id="course<?php echo $i; ?>code" name="course<?php echo $i; ?>code"><br><br>
+            
+            <label for="course<?php echo $i; ?>title">Course <?php echo $i; ?> Title:</label>
+            <input type="text" id="course<?php echo $i; ?>title" name="course<?php echo $i; ?>title"><br><br>
+            
+            <label for="course<?php echo $i; ?>units">Course <?php echo $i; ?> Units:</label>
+            <input type="number" id="course<?php echo $i; ?>units" name="course<?php echo $i; ?>units"><br><br>
+        <?php endfor; ?>
+        
+        <input type="submit" value="Register">
+    </form>
+</body>
+</html>
