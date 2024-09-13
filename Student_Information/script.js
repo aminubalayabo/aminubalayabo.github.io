@@ -1,59 +1,45 @@
-let studentsProfiles = []; // This would typically be loaded from Students_Profile.txt  
-let loggedInUser = null;  
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('student-registration-form');
+    const addCourseButton = document.getElementById('add-course');
+    const coursesContainer = document.getElementById('courses-container');
+    let courseCount = 0;
 
-const sampleProfiles = `username,Admission number,name,Department,Level,Session,Phone Number,email,course information  
-user1,2020171234,John Doe,BIOCHEMISTRY,100L,2022,1234567890,john@example.com,CSE101,Computer Science,3  
-user2,2020123456,Jane Smith,BIOLOGY,200L,2021,0987654321,jane@example.com,BIO101,Biology,3`;  
+    addCourseButton.addEventListener('click', () => {
+        courseCount++;
+        const courseDiv = document.createElement('div');
+        courseDiv.innerHTML = `
+            <h4>Course ${courseCount}</h4>
+            <label for="course${courseCount}-code">Code:</label>
+            <input type="text" id="course${courseCount}-code" name="course${courseCount}-code" required>
+            
+            <label for="course${courseCount}-title">Title:</label>
+            <input type="text" id="course${courseCount}-title" name="course${courseCount}-title" required>
+            
+            <label for="course${courseCount}-units">Units:</label>
+            <input type="number" id="course${courseCount}-units" name="course${courseCount}-units" required>
+        `;
+        coursesContainer.appendChild(courseDiv);
+    });
 
-// Function to load profiles into an array  
-function loadProfiles() {  
-    // In a real application, profiles would be read from a .txt file or backend.  
-    studentsProfiles = sampleProfiles.split('\n').slice(1).map(line => {  
-        const [username, admissionNumber, name, department, level, session, phoneNumber, email] = line.split(',');  
-        return { username, admissionNumber, name, department, level, session, phoneNumber, email };  
-    });  
-}  
-
-// Login Function  
-function login() {  
-    const username = document.getElementById("username").value;  
-    const password = document.getElementById("password").value;  
-
-    if (password === username) { // admission number as password  
-        loggedInUser = studentsProfiles.find(profile => profile.username === username);  
-        if (loggedInUser) {  
-            alert("Login successful");  
-            document.getElementById("loginForm").style.display = "none";  
-            document.getElementById("studentDashboard").style.display = "block";  
-        } else {  
-            alert("Invalid username");  
-        }  
-    } else {  
-        alert("Incorrect password");  
-    }  
-}  
-
-// Function to view profile  
-function viewProfile() {  
-    if (loggedInUser) {  
-        const profileHTML = `  
-            <h3>Profile</h3>  
-            <p>Name: ${loggedInUser.name}</p>  
-            <p>Department: ${loggedInUser.department}</p>  
-            <p>Level: ${loggedInUser.level}</p>  
-            <p>Session: ${loggedInUser.session}</p>  
-            <p>Email: ${loggedInUser.email}</p>  
-            <img src="Passport/${loggedInUser.Admission_number}.jpg" alt="Profile Image">  
-        `;  
-        document.getElementById("resultsSummary").innerHTML = profileHTML;  
-        document.getElementById("resultsSummary").style.display = 'block';  
-    }  
-}  
-
-// Placeholder for results viewing  
-function viewResults() {  
-    alert("This functionality to view results is yet to be implemented.");  
-}  
-
-// Load profiles on page load  
-loadProfiles();
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(form);
+        
+        try {
+            const response = await fetch('/api/register-student', {
+                method: 'POST',
+                body: formData
+            });
+            
+            if (response.ok) {
+                alert('Registration successful!');
+                form.reset();
+            } else {
+                alert('Registration failed. Please try again.');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('An error occurred. Please try again.');
+        }
+    });
+});
