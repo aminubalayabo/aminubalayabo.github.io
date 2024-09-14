@@ -3,24 +3,42 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Student Information System</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Student Registration</title>
 </head>
 <body>
-    <header>
-        <h1>Student Information System</h1>
-    </header>
-    <nav>
-        <ul>
-            <li><a href="../Student_Information/registration.html" id="student-registration">Student Registration</a></li>
-            <li><a href="#" id="student-login">Student Login</a></li>
-            <li><a href="#" id="admin-login">Admin Login</a></li>
-        </ul>
-    </nav>
-    <main id="main-content">
-        <!-- Content will be dynamically loaded here -->
-       
-    </main>
+    <h2>Student Registration</h2>
+    <form id="registrationForm">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required><br><br>
+
+        <label for="admission_number">Admission Number:</label>
+        <input type="text" id="admission_number" name="admission_number" required><br><br>
+
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+
+        <label for="department">Department:</label>
+        <input type="text" id="department" name="department" required><br><br>
+
+        <label for="level">Level:</label>
+        <input type="text" id="level" name="level" required><br><br>
+
+        <label for="session">Session:</label>
+        <input type="text" id="session" name="session" required><br><br>
+
+        <label for="phone_number">Phone Number:</label>
+        <input type="tel" id="phone_number" name="phone_number" required><br><br>
+
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+
+        <!-- Course fields (14 courses) -->
+        <div id="courseFields"></div>
+
+        <input type="submit" value="Register">
+    </form>
+
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
