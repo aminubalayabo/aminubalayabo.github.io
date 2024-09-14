@@ -1,40 +1,25 @@
 <?php
 session_start();
 
-// Database connection
-$servername = "localhost";
-$username = "your_username";
-$password = "your_password";
-$dbname = "student_information";
-
-$conn = new mysqli($servername, $username, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Connection failed: " . $conn->connect_error);
-}
-
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    $file_path = "Student_Information/Students_Results.txt";
     $username = $_POST['username'];
     $password = $_POST['password'];  // This is the admission number
-
-    $sql = "SELECT * FROM Students_Profile WHERE username = ? AND admission_number = ?";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("ss", $username, $password);
-    $stmt->execute();
-    $result = $stmt->get_result();
-
-    if ($result->num_rows == 1) {
-        $row = $result->fetch_assoc();
-        $_SESSION['user_id'] = $row['id'];
-        $_SESSION['username'] = $row['username'];
-        $_SESSION['admission_number'] = $row['admission_number'];
-        header("Location: student_dashboard.php");
-    } else {
-        echo "Invalid username or password";
+    
+    $data = file_get_contents($file_path);
+    $lines = explode("\n", $data);
+    
+    foreach ($lines as $line) {
+        $fields = explode(",", $line);
+        if ($fields[0] == $username && $fields[1] == $password) {
+            $_SESSION['username'] = $username;
+            echo "Login successful";
+            exit;
+        }
     }
-
-    $stmt->close();
+    
+    echo "Invalid username or password";
+} else {
+    echo "Invalid request method";
 }
-
-$conn->close();
 ?>
