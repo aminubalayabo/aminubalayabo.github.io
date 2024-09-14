@@ -55,7 +55,7 @@ document.getElementById('registrationForm').addEventListener('submit', async fun
             sha: response.data.sha
         }, {
             headers: {
-                'Authorization': 'Bearer YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+                'Authorization': 'Bearer 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'
             }
         });
 
