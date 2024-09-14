@@ -1,73 +1,71 @@
-document.addEventListener('DOMContentLoaded', () => {
-    const form = document.getElementById('student-registration-form');
-    const addCourseButton = document.getElementById('add-course');
-    const coursesContainer = document.getElementById('courses-container');
-    let courseCount = 0;
+// GitHub repository details
+const owner = 'aminubalayabo';
+const repo = 'aminubalayabo.github.io';
+const path = 'Student_Information/Students_Results.txt';
 
-    addCourseButton.addEventListener('click', () => {
-        courseCount++;
-        const courseDiv = document.createElement('div');
-        courseDiv.innerHTML = `
-            <h4>Course ${courseCount}</h4>
-            <label for="course${courseCount}-code">Code:</label>
-            <input type="text" id="course${courseCount}-code" name="course${courseCount}-code" required>
+// Generate course fields
+function generateCourseFields() {
+    const courseFields = document.getElementById('courseFields');
+    for (let i = 1; i <= 14; i++) {
+        courseFields.innerHTML += `
+            <h3>Course ${i}</h3>
+            <label for="course${i}code">Course ${i} Code:</label>
+            <input type="text" id="course${i}code" name="course${i}code"><br><br>
             
-            <label for="course${courseCount}-title">Title:</label>
-            <input type="text" id="course${courseCount}-title" name="course${courseCount}-title" required>
+            <label for="course${i}title">Course ${i} Title:</label>
+            <input type="text" id="course${i}title" name="course${i}title"><br><br>
             
-            <label for="course${courseCount}-units">Units:</label>
-            <input type="number" id="course${courseCount}-units" name="course${courseCount}-units" required>
+            <label for="course${i}units">Course ${i} Units:</label>
+            <input type="number" id="course${i}units" name="course${i}units"><br><br>
         `;
-        coursesContainer.appendChild(courseDiv);
-    });
+    }
+}
 
-    form.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(form);
-        
-        try {
-            const response = await fetch('/api/register-student', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                alert('Registration successful!');
-                form.reset();
-            } else {
-                alert('Registration failed. Please try again.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
-        }
-    });
-});
-document.addEventListener('DOMContentLoaded', () => {
-    const loginForm = document.getElementById('student-login-form');
+// Handle form submission
+document.getElementById('registrationForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const formData = new FormData(this);
+    const data = Object.fromEntries(formData.entries());
 
-    loginForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(loginForm);
-        
-        try {
-            const response = await fetch('/api/student-login', {
-                method: 'POST',
-                body: formData
-            });
-            
-            if (response.ok) {
-                const data = await response.json();
-                // Store the student data in session storage
-                sessionStorage.setItem('studentData', JSON.stringify(data));
-                // Redirect to the student dashboard
-                window.location.href = 'student-dashboard.html';
-            } else {
-                alert('Login failed. Please check your credentials and try again.');
-            }
-        } catch (error) {
-            console.error('Error:', error);
-            alert('An error occurred. Please try again.');
+    // Prepare the data string
+    let dataString = `${data.username},${data.admission_number},${data.name},${data.department},${data.level},${data.session},${data.phone_number},${data.email}`;
+    for (let i = 1; i <= 14; i++) {
+        dataString += `,${data[`course${i}code`]},${data[`course${i}title`]},${data[`course${i}units`]}`;
+    }
+    dataString += '\n';
+
+    try {
+        // Get the current file content
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+        const currentContent = atob(response.data.content);
+
+        // Check if user already exists
+        if (currentContent.includes(data.username) || currentContent.includes(data.admission_number)) {
+            alert('User already exists');
+            return;
         }
-    });
+
+        // Append new data
+        const updatedContent = currentContent + dataString;
+
+        // Update the file in the repository
+        await axios.put(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`, {
+            message: 'Add new student registration',
+            content: btoa(updatedContent),
+            sha: response.data.sha
+        }, {
+            headers: {
+                'Authorization': 'Bearer YOUR_GITHUB_PERSONAL_ACCESS_TOKEN'
+            }
+        });
+
+        alert('Registration successful');
+        this.reset();
+    } catch (error) {
+        console.error('Error:', error);
+        alert('An error occurred during registration');
+    }
 });
+
+// Initialize course fields on page load
+generateCourseFields();
