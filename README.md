@@ -17,7 +17,7 @@
 - Usmanu Danfodiyo University, Sokoto
 - Zamfara State University, Mafara
 - [Click](index.html)
-- [Register](Student_Information/register.php)
+- [Register](Student_Information/register.html)
 
 #Work History
 - WorkSpace 1
