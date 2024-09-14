@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Profile</title>
+</head>
+<body>
+    <h2>Student Profile</h2>
+    <div id="profileInfo"></div>
+    <button onclick="logout()">Logout</button>
+
+    <script>
+        function displayProfile() {
+            const user = JSON.parse(sessionStorage.getItem('currentUser'));
+            if (!user) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            const profileInfo = document.getElementById('profileInfo');
+            profileInfo.innerHTML = `
+                <p>Username: ${user[0]}</p>
+                <p>Admission Number: ${user[1]}</p>
+                <p>Name: ${user[2]}</p>
+                <p>Department: ${user[3]}</p>
+                <p>Level: ${user[4]}</p>
+                <p>Session: ${user[5]}</p>
+                <p>Phone Number: ${user[6]}</p>
+                <p>Email: ${user[7]}</p>
+                <h3>Courses</h3>
+            `;
+
+            for (let i = 8, course = 1; i < user.length; i += 3, course++) {
+                profileInfo.innerHTML += `
+                    <p>Course ${course}: ${user[i]} - ${user[i+1]} (${user[i+2]} units)</p>
+                `;
+            }
+        }
+
+        function logout() {
+            sessionStorage.removeItem('currentUser');
+            window.location.href = 'login.html';
+        }
+
+        displayProfile();
+    </script>
+</body>
+</html>
