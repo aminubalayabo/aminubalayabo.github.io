@@ -17,6 +17,7 @@
 - Some University
 - Usmanu Danfodiyo University, Sokoto
 - Zamfara State University, Mafara
+- [StdtDashb](Student_Information/studentDashboard.html)
 - [Click](Student_Information/studentDashboard.html)
 - [Register](Student_Information/studentDashboard.html)
 
