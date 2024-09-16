@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $file_path = "Student_Information/Students_Results.txt";
+    $file_path = "Student_Information/Students_Profile.txt";
     
     // Check if the user already exists
     $existing_data = file_get_contents($file_path);
