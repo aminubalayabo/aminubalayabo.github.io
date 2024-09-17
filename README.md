@@ -19,7 +19,7 @@
 - Zamfara State University, Mafara
 - [StdtDashb](Student_Information/studentDashboard.html)
 - [Click](Student_Information/studentDashboard.html)
-- [Register](Student_Information/studentDashboard.html)
+- [Results](Students_Result/index.html)
 
 #Work History
 - WorkSpace 1
