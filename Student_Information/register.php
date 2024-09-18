@@ -1,6 +1,6 @@
 <?php
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $file_path = "https://raw.githubusercontent.com/aminubalayabo/Students_Info/main/Student_Information/Students_Profile.txt";
+    $file_path = "https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/main/Student_Information/Students_Profile.txt";
     
     // Check if the user already exists
     $existing_data = file_get_contents($file_path);
