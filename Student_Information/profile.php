@@ -6,7 +6,7 @@ if (!isset($_SESSION['username'])) {
     exit;
 }
 
-$file_path = "Student_Information/Students_Results.txt";
+$file_path = "https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/main/Student_Information/Students_Profile.txt";
 $username = $_SESSION['username'];
 
 $data = file_get_contents($file_path);
