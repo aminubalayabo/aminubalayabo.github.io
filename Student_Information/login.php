@@ -2,7 +2,7 @@
 session_start();
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    $file_path = "Student_Information/Students_Results.txt";
+    $file_path = "Student_Information/Students_Profile.txt";
     $username = $_POST['username'];
     $password = $_POST['password'];  // This is the admission number
     
