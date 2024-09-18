@@ -12,6 +12,7 @@
 - [Click](https://script.google.com/macros/s/AKfycbz11_Bylx3amIqfC4yBbfNdDgQuJivNSayZ31nUxi14e2L8pnMaZ73DmUX5s_nBqmdq/exec)
 - [Current login trial](Student_Information/login.html)
 - [Register](Student_Information/register.html)
+- [Profileview](Student_Information/profile.html)
   
 #Education
 - Some University
