@@ -18,7 +18,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
             if (fields[0] === username && fields[1] === password) {
                 // Login successful
                 sessionStorage.setItem('currentUser', JSON.stringify(fields));
-                window.location.href = 'profile.html';
+                // window.location.href = 'profile.html';
+                window.location.href = 'studentDashboard.html';
                 return;
             }
         }
