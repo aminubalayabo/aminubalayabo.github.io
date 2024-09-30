@@ -1,7 +1,7 @@
 // GitHub repository details
 const owner = 'aminubalayabo';
 const repo = 'aminubalayabo.github.io';
-const path = 'Student_Information/Students_Results.txt';
+const path = 'Student_Information/Students_Profile.txt';
 
 // Generate course fields
 function generateCourseFields() {
