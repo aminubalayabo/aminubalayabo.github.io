@@ -24,4 +24,5 @@
 
 #Work History
 - WorkSpace 1
+- [Details](Student_Information/details.html)
 - WorkSpace 2
