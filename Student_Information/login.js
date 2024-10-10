@@ -9,8 +9,8 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     const password = document.getElementById('password').value;
 
     try {
-        // const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
-        const response = await axios.get('https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/refs/heads/main/Student_Information/Students_Profile.txt");
+        const response = await axios.get(`https://api.github.com/repos/${owner}/${repo}/contents/${path}`);
+        // const response = await axios.get('https://raw.githubusercontent.com/aminubalayabo/aminubalayabo.github.io/refs/heads/main/Student_Information/Students_Profile.txt");
         const content = atob(response.data.content);
         const lines = content.split('\n');
 
