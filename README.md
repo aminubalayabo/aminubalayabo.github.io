@@ -5,7 +5,7 @@
 - Result Check: School of Basic And Advanced Studies, Usmanu Damfodiyo University, Sokoto.
 - [Click Here to Login and Check Your Results for 2024/2025 Academic Session](SOBAS/index.html)
 - [Click Here to Login and Check Results of !st CA for 2024/2025 Academic Session](Students_Result/index.html)
-- [student registration trial](Student_Information/index.html)
+- [mdcan_coop trial](https://github.com/aminubalayabo/mdcan_cooperative/blob/main/index.php)
   
 ###Cooperative
 - Description - Cooperative Software Management
