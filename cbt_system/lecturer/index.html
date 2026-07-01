@@ -1,0 +1,502 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CBT — Lecturer Portal | UDUSOK</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0b0f1a;--panel:#111827;--card:#1a2236;--border:#2a3a55;
+  --accent:#10b981;--accent2:#34d399;--danger:#ef4444;--success:#22c55e;
+  --warn:#f59e0b;--text:#e2e8f0;--muted:#64748b;
+  --radius:12px;--font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh}
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;
+  background:radial-gradient(ellipse at 30% 20%,#064e3b55,transparent 60%),var(--bg)}
+.login-box{background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  padding:48px 40px;width:100%;max-width:420px;box-shadow:0 32px 80px #00000088}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo h1{font-size:1.1rem;font-weight:700;line-height:1.2}
+.logo span{font-size:.7rem;color:var(--muted);display:block;font-weight:400}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.75rem;font-weight:600;color:var(--muted);
+  text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:#0d1626;border:1px solid var(--border);
+  border-radius:8px;padding:11px 14px;color:var(--text);font-family:var(--font);font-size:.9rem;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:none;border-radius:8px;
+  font-family:var(--font);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#059669);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px #10b98155}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-warn{background:var(--warn);color:#000}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{background:var(--card)}
+.btn-sm{padding:7px 13px;font-size:.78rem}
+.btn-full{width:100%;justify-content:center}
+.alert{padding:12px 16px;border-radius:8px;font-size:.85rem;margin-bottom:16px}
+.alert-err{background:#1f0a0a;border:1px solid var(--danger);color:#fca5a5}
+.alert-ok{background:#0a1f0a;border:1px solid var(--success);color:#86efac}
+.alert-warn{background:#1f1800;border:1px solid var(--warn);color:#fcd34d}
+#app{display:none;min-height:100vh;flex-direction:column}
+header{background:var(--panel);border-bottom:1px solid var(--border);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:50}
+.header-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem}
+.dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.lec-badge{background:linear-gradient(135deg,#064e3b,#065f46);border:1px solid var(--accent);
+  padding:5px 12px;border-radius:20px;font-size:.78rem;color:var(--accent2);font-weight:600}
+.main-layout{display:flex;flex:1}
+nav.sidebar{width:220px;background:var(--panel);border-right:1px solid var(--border);padding:20px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;
+  font-size:.87rem;font-weight:500;color:var(--muted);transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:#ffffff08}
+.nav-item.active{color:var(--accent2);background:#34d3990f;border-left-color:var(--accent2)}
+.nav-item .icon{font-size:1rem;width:18px;text-align:center}
+.content{flex:1;padding:28px;overflow-y:auto;max-width:1000px}
+.page{display:none}.page.active{display:block}
+.page-title{font-size:1.3rem;font-weight:700;margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:.84rem;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:.95rem;font-weight:600;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead{background:#0d1626}
+th{padding:11px 14px;text-align:left;font-size:.73rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
+td{padding:11px 14px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:#ffffff04}
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover{border-color:var(--accent);background:#10b9810a}
+.upload-zone .icon{font-size:2.5rem;margin-bottom:8px}
+.upload-zone p{font-size:.85rem;color:var(--muted)}
+.subject-chip{display:inline-flex;align-items:center;gap:6px;background:#0d1626;
+  border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:.78rem;font-family:var(--mono);margin:3px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.modal-bg{display:none;position:fixed;inset:0;background:#00000088;z-index:200;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:1rem;font-weight:700;margin-bottom:20px}
+</style>
+</head>
+<body>
+
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">
+      <div class="logo-icon">👨‍🏫</div>
+      <h1>Lecturer Portal <span>UDUSOK CBT System</span></h1>
+    </div>
+    <div id="login-alert"></div>
+    <div class="field"><label>Email Address</label><input type="email" id="login-email" placeholder="your@udusok.edu.ng"/></div>
+    <div class="field"><label>Password</label><input type="password" id="login-pass"/></div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+
+<div id="app">
+  <header>
+    <div class="header-logo"><div class="dot"></div> Lecturer Portal &nbsp;<span style="color:var(--muted);font-size:.8rem;font-weight:400">UDUSOK CBT</span></div>
+    <div style="display:flex;align-items:center;gap:12px">
+      <span class="lec-badge" id="lec-name-badge">Lecturer</span>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+  <div class="main-layout">
+    <nav class="sidebar">
+      <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPage('questions')"><span class="icon">❓</span><span>Questions</span></div>
+      <div class="nav-item" onclick="showPage('students')"><span class="icon">👥</span><span>Students</span></div>
+    </nav>
+    <div class="content">
+
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">My Dashboard</div>
+        <p class="page-sub">Your assigned subjects and quick actions</p>
+        <div class="card">
+          <div class="card-title">My Assigned Subjects</div>
+          <div id="my-subjects-list" style="display:flex;flex-wrap:wrap;gap:6px;min-height:40px">
+            <span style="color:var(--muted);font-size:.85rem">Loading…</span>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title">Quick Actions</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-primary" onclick="showPage('questions')">📤 Upload Questions</button>
+            <button class="btn btn-ghost" onclick="showPage('students')">👥 View Students</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-questions">
+        <div class="page-title">Questions</div>
+        <p class="page-sub">Upload questions for your assigned subjects via CSV</p>
+        <div class="card">
+          <div class="card-title">Upload Questions (CSV)</div>
+          <div id="lec-upload-alert"></div>
+          <div class="field"><label>Select Subject</label>
+            <select id="lec-q-subject"><option value="">— Choose subject —</option></select>
+          </div>
+          <div class="upload-zone" onclick="document.getElementById('lec-csv-input').click()">
+            <div class="icon">📄</div>
+            <p><strong>Click to choose CSV file</strong><br>Headers: Question, Opt1, Opt2, Opt3, Opt4, correct, mark</p>
+          </div>
+          <input type="file" id="lec-csv-input" accept=".csv" style="display:none" onchange="handleQuestionCSV(this)"/>
+          <div id="lec-upload-result" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Question Bank</span>
+            <select id="lec-q-filter" style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.82rem" onchange="loadLecturerQuestions()">
+              <option value="">All my subjects</option>
+            </select>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Subject</th><th>Question</th><th>Correct</th><th>Mark</th><th>Actions</th></tr></thead>
+              <tbody id="lec-questions-tbody"><tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <div class="page" id="page-students">
+        <div class="page-title">Students</div>
+        <p class="page-sub">View enrolled students and manage their passwords</p>
+
+        <!-- Enrolled students (primary feature) -->
+        <div class="card">
+          <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:10px">
+              <span style="font-size:.95rem;font-weight:600">Enrolled Students</span>
+              <span id="lec-student-count" style="background:#0d1626;border:1px solid var(--border);border-radius:20px;padding:2px 10px;font-size:.75rem;color:var(--muted)">0 students</span>
+            </div>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+              <input id="lec-search" type="text" placeholder="Search name or adm no…"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:6px 12px;color:var(--text);font-size:.82rem;width:190px"
+                oninput="filterEnrolledStudents()"/>
+              <select id="lec-st-view-subject" style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.82rem" onchange="loadEnrolledStudents()">
+                <option value="">— All my subjects —</option>
+              </select>
+            </div>
+          </div>
+          <div style="overflow-x:auto;border-radius:10px;border:1px solid var(--border)">
+            <table style="width:100%;border-collapse:collapse;font-size:.84rem">
+              <thead style="background:#0d1626"><tr>
+                <th style="padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600">#</th>
+                <th style="padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600">Name</th>
+                <th style="padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600">Adm No</th>
+                <th style="padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600">Subject</th>
+                <th style="padding:10px 14px;text-align:left;font-size:.72rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:600">Action</th>
+              </tr></thead>
+              <tbody id="lec-enrolled-tbody"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Batch Register (secondary) -->
+        <div class="card">
+          <div class="card-title">Batch Register Students (CSV)</div>
+          <div id="lec-st-alert"></div>
+          <div class="field"><label>Enroll into Subject</label>
+            <select id="lec-st-subject"><option value="">— Choose subject —</option></select>
+          </div>
+          <div class="upload-zone" onclick="document.getElementById('lec-st-csv').click()">
+            <div class="icon">👥</div>
+            <p><strong>Click to choose CSV file</strong><br>Headers: Adm no, Name</p>
+          </div>
+          <input type="file" id="lec-st-csv" accept=".csv" style="display:none" onchange="handleStudentCSV(this)"/>
+          <div id="lec-st-result" style="margin-top:12px"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Reset Student Password Modal -->
+<div class="modal-bg" id="lec-reset-modal">
+  <div class="modal">
+    <div class="modal-title">🔑 Reset Student Password</div>
+    <input type="hidden" id="lrp-student-id"/>
+    <div style="background:#0d1626;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Student</div>
+      <div style="font-weight:600;font-size:.95rem" id="lrp-student-name"></div>
+      <div style="font-family:var(--mono);color:var(--accent);font-size:.82rem;margin-top:2px" id="lrp-student-adm"></div>
+    </div>
+    <div class="field">
+      <label>New Password</label>
+      <div style="position:relative">
+        <input type="text" id="lrp-new-pass" placeholder="Enter or generate a password (min 4 chars)"
+          style="width:100%;background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:11px 14px;color:var(--text);font-family:var(--mono);font-size:.9rem"/>
+      </div>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('lrp-new-pass').value=document.getElementById('lrp-student-adm').textContent">📋 Use Adm No</button>
+      <button class="btn btn-ghost btn-sm" onclick="document.getElementById('lrp-new-pass').value='password123'">🔒 Use Default</button>
+      <button class="btn btn-warn btn-sm" onclick="generatePassword()">⚡ Generate</button>
+    </div>
+    <div id="lrp-alert"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeLecResetModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="doLecResetPassword()">Reset Password →</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-bg" id="lec-edit-modal">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Question</div>
+    <input type="hidden" id="leq-id"/>
+    <div class="field"><label>Question</label><textarea id="leq-q" rows="3"></textarea></div>
+    <div class="row2">
+      <div class="field"><label>Option 1</label><input type="text" id="leq-o1"/></div>
+      <div class="field"><label>Option 2</label><input type="text" id="leq-o2"/></div>
+      <div class="field"><label>Option 3</label><input type="text" id="leq-o3"/></div>
+      <div class="field"><label>Option 4</label><input type="text" id="leq-o4"/></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Correct (1-4)</label><input type="number" id="leq-cor" min="1" max="4"/></div>
+      <div class="field"><label>Mark</label><input type="number" id="leq-mk" min="1"/></div>
+    </div>
+    <div id="leq-alert"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeLecEditModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveLecQuestion()">Save</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'api.php';
+let mySubjects = [];
+
+async function post(action, body={}){
+  const fd = body instanceof FormData ? body : (()=>{
+    const f=new FormData(); f.append('action',action);
+    for(const [k,v] of Object.entries(body)) f.append(k,v); return f;
+  })();
+  if(body instanceof FormData) fd.append('action',action);
+  return fetch(API,{method:'POST',body:fd}).then(r=>r.json());
+}
+async function get(action,params={}){
+  return fetch(`${API}?${new URLSearchParams({action,...params})}`).then(r=>r.json());
+}
+function setAlert(id,msg,type='err'){
+  const el=document.getElementById(id);
+  if(!el)return;
+  el.innerHTML=msg?`<div class="alert alert-${type}">${msg}</div>`:'';
+}
+
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!email||!pass){setAlert('login-alert','Fill all fields.');return;}
+  const r=await post('lecturer_login',{email,password:pass});
+  if(r.ok){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    document.getElementById('lec-name-badge').textContent=r.name;
+    initApp();
+  } else setAlert('login-alert',r.msg||'Login failed.');
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+async function doLogout(){ await get('lecturer_logout'); location.reload(); }
+
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{
+    if(n.getAttribute('onclick')?.includes(name)) n.classList.add('active');
+  });
+  if(name==='questions') loadLecturerQuestions();
+  if(name==='students') loadEnrolledStudents();
+}
+
+async function initApp(){
+  const r=await get('my_assigned_subjects');
+  mySubjects=r.data||[];
+  const list=document.getElementById('my-subjects-list');
+  list.innerHTML=mySubjects.length
+    ? mySubjects.map(s=>`<span class="subject-chip">📚 ${s.name} <span style="color:var(--muted)">${s.code}</span></span>`).join('')
+    : '<span style="color:var(--muted);font-size:.85rem">No subjects assigned. Contact admin.</span>';
+  ['lec-q-subject','lec-q-filter','lec-st-subject','lec-st-view-subject'].forEach(id=>{
+    const el=document.getElementById(id);
+    const first=el.options[0];
+    el.innerHTML=''; el.appendChild(first);
+    mySubjects.forEach(s=>{
+      const o=document.createElement('option');
+      o.value=s.id; o.textContent=`${s.name} (${s.code})`; el.appendChild(o);
+    });
+  });
+  loadEnrolledStudents();
+}
+
+function handleQuestionCSV(input){
+  const sid=document.getElementById('lec-q-subject').value;
+  if(!sid){setAlert('lec-upload-alert','Please select a subject first.');input.value='';return;}
+  setAlert('lec-upload-alert','');
+  document.getElementById('lec-upload-result').innerHTML='<span style="color:var(--muted)">Uploading…</span>';
+  const fd=new FormData();
+  fd.append('action','lecturer_upload_questions');
+  fd.append('subject_id',sid);
+  fd.append('csv_file',input.files[0]);
+  fetch(API,{method:'POST',body:fd}).then(r=>r.json()).then(r=>{
+    const el=document.getElementById('lec-upload-result');
+    if(r.ok){
+      let html=`<div class="alert alert-ok">✅ <strong>${r.inserted}</strong> question(s) uploaded successfully.</div>`;
+      if(r.errors?.length) html+=`<div class="alert alert-warn">⚠ Skipped rows:<br>${r.errors.join('<br>')}</div>`;
+      el.innerHTML=html;
+    } else el.innerHTML=`<div class="alert alert-err">${r.msg}</div>`;
+    input.value='';
+  });
+}
+
+async function loadLecturerQuestions(){
+  const sid=document.getElementById('lec-q-filter').value;
+  const ids=sid?[sid]:mySubjects.map(s=>s.id);
+  const tbody=document.getElementById('lec-questions-tbody');
+  if(!ids.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">No subjects assigned.</td></tr>';return;}
+  const r=await get('lecturer_get_questions',{subject_ids:ids.join(',')});
+  if(!r.data?.length){tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">No questions yet.</td></tr>';return;}
+  tbody.innerHTML=r.data.map((q,i)=>`<tr>
+    <td>${i+1}</td>
+    <td style="font-size:.78rem;color:var(--muted)">${q.subject_name}</td>
+    <td style="max-width:260px">${q.question.substring(0,80)}${q.question.length>80?'…':''}</td>
+    <td><span style="font-family:var(--mono);background:#14532d;color:#86efac;padding:3px 8px;border-radius:5px;font-size:.8rem">Opt ${q.correct_option}</span></td>
+    <td>${q.mark}</td>
+    <td style="display:flex;gap:6px">
+      <button class="btn btn-warn btn-sm" onclick='openLecEdit(${JSON.stringify(q)})'>✏</button>
+      <button class="btn btn-danger btn-sm" onclick="deleteLecQuestion(${q.id})">🗑</button>
+    </td>
+  </tr>`).join('');
+}
+
+function openLecEdit(q){
+  document.getElementById('leq-id').value=q.id;
+  document.getElementById('leq-q').value=q.question;
+  document.getElementById('leq-o1').value=q.option1;
+  document.getElementById('leq-o2').value=q.option2;
+  document.getElementById('leq-o3').value=q.option3;
+  document.getElementById('leq-o4').value=q.option4;
+  document.getElementById('leq-cor').value=q.correct_option;
+  document.getElementById('leq-mk').value=q.mark;
+  setAlert('leq-alert','');
+  document.getElementById('lec-edit-modal').classList.add('open');
+}
+function closeLecEditModal(){document.getElementById('lec-edit-modal').classList.remove('open');}
+
+async function saveLecQuestion(){
+  const data={id:document.getElementById('leq-id').value,
+    question:document.getElementById('leq-q').value,
+    option1:document.getElementById('leq-o1').value,option2:document.getElementById('leq-o2').value,
+    option3:document.getElementById('leq-o3').value,option4:document.getElementById('leq-o4').value,
+    correct_option:document.getElementById('leq-cor').value,mark:document.getElementById('leq-mk').value};
+  const r=await post('lecturer_update_question',data);
+  if(r.ok){closeLecEditModal();loadLecturerQuestions();}
+  else setAlert('leq-alert',r.msg||'Failed.');
+}
+
+async function deleteLecQuestion(id){
+  if(!confirm('Delete this question?')) return;
+  await post('lecturer_delete_question',{id});
+  loadLecturerQuestions();
+}
+
+function handleStudentCSV(input){
+  const sid=document.getElementById('lec-st-subject').value;
+  if(!sid){setAlert('lec-st-alert','Please select a subject first.');input.value='';return;}
+  setAlert('lec-st-alert','');
+  document.getElementById('lec-st-result').innerHTML='<span style="color:var(--muted)">Uploading…</span>';
+  const fd=new FormData();
+  fd.append('action','lecturer_batch_register');
+  fd.append('subject_id',sid);
+  fd.append('csv_file',input.files[0]);
+  fetch(API,{method:'POST',body:fd}).then(r=>r.json()).then(r=>{
+    const el=document.getElementById('lec-st-result');
+    if(r.ok){
+      let html=`<div class="alert alert-ok">✅ <strong>${r.inserted}</strong> student(s) registered/enrolled.</div>`;
+      if(r.errors?.length) html+=`<div class="alert alert-warn">⚠ Skipped:<br>${r.errors.join('<br>')}</div>`;
+      el.innerHTML=html;
+    } else el.innerHTML=`<div class="alert alert-err">${r.msg}</div>`;
+    input.value='';
+  });
+}
+
+// ── Enrolled students list ────────────────────────────────
+let enrolledData=[];
+async function loadEnrolledStudents(){
+  const sid=document.getElementById('lec-st-view-subject').value;
+  const tbody=document.getElementById('lec-enrolled-tbody');
+  tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>';
+  const r=await get('get_enrolled_students',{subject_id:sid});
+  enrolledData=r.data||[];
+  document.getElementById('lec-search').value='';
+  renderEnrolledStudents(enrolledData);
+}
+function filterEnrolledStudents(){
+  const q=document.getElementById('lec-search').value.toLowerCase();
+  renderEnrolledStudents(q
+    ? enrolledData.filter(s=>s.name.toLowerCase().includes(q)||s.admission_no.toLowerCase().includes(q))
+    : enrolledData);
+}
+function renderEnrolledStudents(data){
+  const tbody=document.getElementById('lec-enrolled-tbody');
+  const countEl=document.getElementById('lec-student-count');
+  countEl.textContent=`${data.length} student${data.length!==1?'s':''}`;
+  if(!data.length){
+    tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No students found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map((s,i)=>`<tr>
+    <td style="padding:10px 14px;border-top:1px solid var(--border);color:var(--muted);font-size:.78rem">${i+1}</td>
+    <td style="padding:10px 14px;border-top:1px solid var(--border);font-weight:600">${s.name}</td>
+    <td style="padding:10px 14px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.78rem;color:var(--accent)">${s.admission_no}</td>
+    <td style="padding:10px 14px;border-top:1px solid var(--border);font-size:.82rem;color:var(--muted)">${s.subject_name}</td>
+    <td style="padding:10px 14px;border-top:1px solid var(--border)">
+      <button class="btn btn-ghost btn-sm"
+        onclick="openLecResetModal(${s.id},'${s.name.replace(/'/g,"\\'")}','${s.admission_no}')">🔑 Reset Password</button>
+    </td>
+  </tr>`).join('');
+}
+
+// ── Reset student password ────────────────────────────────
+function generatePassword(){
+  const chars='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#!';
+  let p='';
+  for(let i=0;i<10;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById('lrp-new-pass').value=p;
+}
+function openLecResetModal(id,name,adm){
+  document.getElementById('lrp-student-id').value=id;
+  document.getElementById('lrp-student-name').textContent=name;
+  document.getElementById('lrp-student-adm').textContent=adm;
+  document.getElementById('lrp-new-pass').value=adm;
+  setAlert('lrp-alert','');
+  document.getElementById('lec-reset-modal').classList.add('open');
+}
+function closeLecResetModal(){
+  document.getElementById('lec-reset-modal').classList.remove('open');
+}
+async function doLecResetPassword(){
+  const id=document.getElementById('lrp-student-id').value;
+  const pass=document.getElementById('lrp-new-pass').value.trim();
+  if(!pass||pass.length<4){setAlert('lrp-alert','Password must be at least 4 characters.');return;}
+  const btn=document.querySelector('#lec-reset-modal .btn-primary');
+  btn.disabled=true; btn.textContent='Resetting…';
+  const r=await post('reset_student_password',{student_id:id,new_password:pass});
+  btn.disabled=false; btn.textContent='Reset Password →';
+  if(r.ok){
+    setAlert('lrp-alert',`✅ Done. Student must change this password on next login.<br>New password: <strong style="font-family:var(--mono);font-size:1rem">${pass}</strong>`,'ok');
+  } else setAlert('lrp-alert',r.msg||'Reset failed.');
+}
+
+document.getElementById('lec-reset-modal').addEventListener('click',function(e){if(e.target===this)closeLecResetModal();});
+document.getElementById('lec-edit-modal').addEventListener('click',function(e){if(e.target===this)closeLecEditModal();});
+</script>
+</body>
+</html>
