@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>CBT Admin — UDUSOK</title>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0b0f1a;--panel:#111827;--card:#1a2236;--border:#2a3a55;
+  --accent:#3b82f6;--accent2:#22d3ee;--danger:#ef4444;--success:#22c55e;
+  --warn:#f59e0b;--text:#e2e8f0;--muted:#64748b;--white:#fff;
+  --radius:12px;--font:'Sora',sans-serif;--mono:'JetBrains Mono',monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:var(--font);min-height:100vh;display:flex;flex-direction:column}
+/* ── Login ── */
+#login-screen{display:flex;align-items:center;justify-content:center;min-height:100vh;
+  background:radial-gradient(ellipse at 30% 20%,#1e3a5f55 0%,transparent 60%),
+             radial-gradient(ellipse at 80% 80%,#0e3a4a55 0%,transparent 60%),var(--bg)}
+.login-box{background:var(--panel);border:1px solid var(--border);border-radius:20px;
+  padding:48px 40px;width:100%;max-width:420px;box-shadow:0 32px 80px #00000088}
+.logo{display:flex;align-items:center;gap:12px;margin-bottom:32px}
+.logo-icon{width:44px;height:44px;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px}
+.logo h1{font-size:1.1rem;font-weight:700;line-height:1.2}
+.logo span{font-size:.7rem;color:var(--muted);display:block;font-weight:400}
+.login-title{font-size:1.4rem;font-weight:700;margin-bottom:6px}
+.login-sub{color:var(--muted);font-size:.85rem;margin-bottom:28px}
+.field{margin-bottom:16px}
+.field label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.field input,.field select,.field textarea{width:100%;background:#0d1626;border:1px solid var(--border);border-radius:8px;
+  padding:11px 14px;color:var(--text);font-family:var(--font);font-size:.9rem;transition:border-color .2s}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:var(--accent)}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:11px 20px;border:none;border-radius:8px;
+  font-family:var(--font);font-size:.88rem;font-weight:600;cursor:pointer;transition:all .2s;text-decoration:none}
+.btn-primary{background:linear-gradient(135deg,var(--accent),#1d4ed8);color:#fff}
+.btn-primary:hover{transform:translateY(-1px);box-shadow:0 6px 20px #3b82f655}
+.btn-danger{background:var(--danger);color:#fff}
+.btn-danger:hover{background:#dc2626}
+.btn-success{background:var(--success);color:#fff}
+.btn-warn{background:var(--warn);color:#000}
+.btn-ghost{background:transparent;border:1px solid var(--border);color:var(--text)}
+.btn-ghost:hover{background:var(--card)}
+.btn-sm{padding:7px 13px;font-size:.78rem}
+.btn-full{width:100%;justify-content:center}
+.alert{padding:12px 16px;border-radius:8px;font-size:.85rem;margin-bottom:16px}
+.alert-err{background:#1f0a0a;border:1px solid var(--danger);color:#fca5a5}
+.alert-ok{background:#0a1f0a;border:1px solid var(--success);color:#86efac}
+.alert-warn{background:#1f1800;border:1px solid var(--warn);color:#fcd34d}
+/* ── App Shell ── */
+#app{display:none;min-height:100vh;flex-direction:column}
+header{background:var(--panel);border-bottom:1px solid var(--border);padding:0 24px;
+  display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:50}
+.header-logo{display:flex;align-items:center;gap:10px;font-weight:700;font-size:1rem}
+.header-logo .dot{width:8px;height:8px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2))}
+.header-right{display:flex;align-items:center;gap:12px}
+.admin-badge{background:var(--card);border:1px solid var(--border);padding:5px 12px;border-radius:20px;font-size:.8rem}
+.main-layout{display:flex;flex:1}
+/* ── Sidebar ── */
+nav.sidebar{width:220px;background:var(--panel);border-right:1px solid var(--border);padding:20px 0;flex-shrink:0}
+.nav-item{display:flex;align-items:center;gap:10px;padding:11px 20px;cursor:pointer;
+  font-size:.87rem;font-weight:500;color:var(--muted);transition:all .15s;border-left:3px solid transparent}
+.nav-item:hover{color:var(--text);background:#ffffff08}
+.nav-item.active{color:var(--accent2);background:#22d3ee0f;border-left-color:var(--accent2)}
+.nav-item .icon{font-size:1rem;width:18px;text-align:center}
+/* ── Content ── */
+.content{flex:1;padding:28px;overflow-y:auto;max-width:1100px}
+.page{display:none}
+.page.active{display:block}
+.page-title{font-size:1.3rem;font-weight:700;margin-bottom:4px}
+.page-sub{color:var(--muted);font-size:.84rem;margin-bottom:24px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:24px;margin-bottom:20px}
+.card-title{font-size:.95rem;font-weight:600;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--border)}
+/* ── Table ── */
+.tbl-wrap{overflow-x:auto;border-radius:10px;border:1px solid var(--border)}
+table{width:100%;border-collapse:collapse;font-size:.83rem}
+thead{background:#0d1626}
+th{padding:11px 14px;text-align:left;font-size:.73rem;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);font-weight:500}
+td{padding:11px 14px;border-top:1px solid var(--border);vertical-align:middle}
+tr:hover td{background:#ffffff04}
+.badge{display:inline-block;padding:3px 9px;border-radius:20px;font-size:.72rem;font-weight:600;font-family:var(--mono)}
+.badge-a{background:#14532d;color:#86efac}
+.badge-b{background:#1e3a5f;color:#93c5fd}
+.badge-c{background:#713f12;color:#fcd34d}
+.badge-d{background:#4c1d95;color:#d8b4fe}
+.badge-f{background:#450a0a;color:#fca5a5}
+/* ── Upload zone ── */
+.upload-zone{border:2px dashed var(--border);border-radius:10px;padding:32px;text-align:center;cursor:pointer;transition:all .2s}
+.upload-zone:hover,.upload-zone.over{border-color:var(--accent);background:#3b82f60a}
+.upload-zone .icon{font-size:2.5rem;margin-bottom:8px}
+.upload-zone p{font-size:.85rem;color:var(--muted)}
+.upload-zone strong{color:var(--text)}
+/* ── Stats ── */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:16px;margin-bottom:24px}
+.stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:20px;text-align:center}
+.stat-num{font-size:2rem;font-weight:700;background:linear-gradient(135deg,var(--accent),var(--accent2));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.stat-lbl{font-size:.78rem;color:var(--muted);margin-top:4px}
+/* ── Modal ── */
+.modal-bg{display:none;position:fixed;inset:0;background:#00000088;z-index:200;align-items:center;justify-content:center}
+.modal-bg.open{display:flex}
+.modal{background:var(--panel);border:1px solid var(--border);border-radius:16px;padding:28px;
+  width:100%;max-width:520px;max-height:90vh;overflow-y:auto}
+.modal-title{font-size:1rem;font-weight:700;margin-bottom:20px}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+/* ── Result grade colors ── */
+.g-A{color:var(--success)} .g-B{color:var(--accent2)} .g-C{color:var(--warn)}
+.g-D{color:#a78bfa} .g-E{color:#fb923c} .g-F{color:var(--danger)}
+/* ── Responsive ── */
+@media(max-width:640px){
+  nav.sidebar{width:56px}
+  .nav-item span{display:none}
+  .content{padding:16px}
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ LOGIN ═══════════════════ -->
+<div id="login-screen">
+  <div class="login-box">
+    <div class="logo">
+      <div class="logo-icon">🎓</div>
+      <h1>CBT System <span>UDUSOK — Admin Panel</span></h1>
+    </div>
+    <div class="login-title">Welcome back</div>
+    <p class="login-sub">Sign in to manage courses and students</p>
+    <div id="login-alert"></div>
+    <div class="field"><label>Email Address</label>
+      <input type="email" id="login-email" value="baba.aminu@udusok.edu.ng" autocomplete="username"/>
+    </div>
+    <div class="field"><label>Password</label>
+      <input type="password" id="login-pass" value="admin" autocomplete="current-password"/>
+    </div>
+    <button class="btn btn-primary btn-full" onclick="doLogin()">Sign In →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════ APP ═══════════════════ -->
+<div id="app">
+  <header>
+    <div class="header-logo"><div class="dot"></div> CBT Admin Panel &nbsp;<span style="color:var(--muted);font-size:.8rem;font-weight:400">UDUSOK</span></div>
+    <div class="header-right">
+      <span class="admin-badge" id="admin-name-badge">Admin</span>
+      <button class="btn btn-ghost btn-sm" onclick="doLogout()">Logout</button>
+    </div>
+  </header>
+  <div class="main-layout">
+    <!-- Sidebar -->
+    <nav class="sidebar">
+      <div class="nav-item active" onclick="showPage('dashboard')"><span class="icon">📊</span><span>Dashboard</span></div>
+      <div class="nav-item" onclick="showPage('subjects')"><span class="icon">📚</span><span>Subjects</span></div>
+      <div class="nav-item" onclick="showPage('questions')"><span class="icon">❓</span><span>Questions</span></div>
+      <div class="nav-item" onclick="showPage('students')"><span class="icon">👥</span><span>Students</span></div>
+      <div class="nav-item" onclick="showPage('results')"><span class="icon">📋</span><span>Results</span></div>
+      <div class="nav-item" onclick="showPage('auditlog')"><span class="icon">🗒️</span><span>Audit Log</span></div>
+    </nav>
+    <!-- Main Content -->
+    <div class="content">
+
+      <!-- ── DASHBOARD ── -->
+      <div class="page active" id="page-dashboard">
+        <div class="page-title">Dashboard</div>
+        <p class="page-sub">Overview of the CBT System</p>
+        <div class="stats-row" id="stats-row">
+          <div class="stat-card"><div class="stat-num" id="stat-subjects">—</div><div class="stat-lbl">Subjects</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-questions">—</div><div class="stat-lbl">Questions</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-students">—</div><div class="stat-lbl">Students</div></div>
+          <div class="stat-card"><div class="stat-num" id="stat-results">—</div><div class="stat-lbl">Results</div></div>
+        </div>
+        <div class="card">
+          <div class="card-title">Quick Actions</div>
+          <div style="display:flex;flex-wrap:wrap;gap:10px">
+            <button class="btn btn-primary" onclick="showPage('subjects')">➕ Add Subject</button>
+            <button class="btn btn-ghost" onclick="showPage('questions')">📤 Upload Questions</button>
+            <button class="btn btn-ghost" onclick="showPage('students')">👥 Batch Register Students</button>
+            <button class="btn btn-ghost" onclick="showPage('results')">📋 View Results</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── SUBJECTS ── -->
+      <div class="page" id="page-subjects">
+        <div class="page-title">Subjects / Courses</div>
+        <p class="page-sub">Add and manage examination subjects</p>
+        <div class="card">
+          <div class="card-title">Add New Subject</div>
+          <div id="subject-alert"></div>
+          <div class="row2">
+            <div class="field"><label>Subject Name</label><input type="text" id="sub-name" placeholder="e.g. Mathematics"/></div>
+            <div class="field"><label>Course Code</label><input type="text" id="sub-code" placeholder="e.g. MTH101"/></div>
+          </div>
+          <div style="display:flex;gap:12px;flex-wrap:wrap">
+            <div class="field" style="flex:1;min-width:160px"><label>Quiz Duration (minutes)</label><input type="number" id="sub-dur" value="30" min="5" max="180"/></div>
+            <div class="field" style="flex:1;min-width:160px"><label>No. of Questions to Ask <span style="color:var(--muted);font-weight:400">(0 = all)</span></label><input type="number" id="sub-numq" value="0" min="0"/></div>
+          </div>
+          <button class="btn btn-primary" onclick="addSubject()">Add Subject</button>
+        </div>
+        <div class="card">
+          <div class="card-title">All Subjects</div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Name</th><th>Code</th><th>Duration</th><th>Questions to Ask</th><th>Actions</th></tr></thead>
+              <tbody id="subjects-tbody"><tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── QUESTIONS ── -->
+      <div class="page" id="page-questions">
+        <div class="page-title">Questions</div>
+        <p class="page-sub">Upload via CSV or edit/delete individual questions</p>
+        <div class="card">
+          <div class="card-title">Upload Questions (CSV)</div>
+          <div id="upload-alert"></div>
+          <div class="field"><label>Select Subject</label>
+            <select id="q-subject-select"><option value="">— Choose subject —</option></select>
+          </div>
+          <div class="upload-zone" id="upload-zone" onclick="document.getElementById('csv-input').click()">
+            <div class="icon">📄</div>
+            <p><strong>Click to choose CSV file</strong><br>Headers required: Question, Opt1, Opt2, Opt3, Opt4, correct, mark</p>
+          </div>
+          <input type="file" id="csv-input" accept=".csv" style="display:none" onchange="handleCSV(this)"/>
+          <div id="upload-result" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            <span>Question Bank</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <select id="q-filter-subject" style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:6px 10px;color:var(--text);font-size:.82rem" onchange="loadQuestions()">
+                <option value="">All subjects</option>
+              </select>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Subject</th><th>Question</th><th>Options</th><th>Correct</th><th>Mark</th><th>Actions</th></tr></thead>
+              <tbody id="questions-tbody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">Select a subject to view questions</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STUDENTS ── -->
+      <div class="page" id="page-students">
+        <div class="page-title">Students</div>
+        <p class="page-sub">Batch register students and manage accounts</p>
+        <div class="card">
+          <div class="card-title">Batch Register</div>
+          <div id="student-upload-alert"></div>
+          <div class="field"><label>Enroll into Subject</label>
+            <select id="st-subject-select"><option value="">— Choose subject —</option></select>
+          </div>
+          <div class="upload-zone" onclick="document.getElementById('st-csv-input').click()">
+            <div class="icon">👥</div>
+            <p><strong>Click to choose CSV file</strong><br>Headers: Adm no, Name</p>
+          </div>
+          <input type="file" id="st-csv-input" accept=".csv" style="display:none" onchange="handleStudentCSV(this)"/>
+          <div id="student-upload-result" style="margin-top:12px"></div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="display:flex;align-items:center;justify-content:space-between">
+            <span>All Registered Students</span>
+            <div style="display:flex;align-items:center;gap:8px">
+              <input type="text" id="student-search" placeholder="Search name or adm no…"
+                oninput="filterStudentTable()"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;
+                padding:6px 12px;color:var(--text);font-family:var(--font);font-size:.82rem;width:220px"/>
+            </div>
+          </div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>#</th><th>Adm No</th><th>Name</th><th>Email</th><th>Registered</th><th>Actions</th></tr></thead>
+              <tbody id="all-students-tbody">
+                <tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── RESULTS ── -->
+      <div class="page" id="page-results">
+        <div class="page-title">Results</div>
+        <p class="page-sub">View and export student results</p>
+        <div class="card">
+          <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:flex-end">
+            <div class="field" style="margin:0;flex:1;min-width:180px"><label>Filter by Subject</label>
+              <select id="res-subject-filter" onchange="loadResults()"><option value="">All Subjects</option></select>
+            </div>
+            <div class="field" style="margin:0;flex:1;min-width:180px"><label>Filter by Student</label>
+              <select id="res-student-filter" onchange="loadResults()"><option value="">All Students</option></select>
+            </div>
+            <button class="btn btn-success btn-sm" onclick="exportResultsCSV()">⬇ Export CSV</button>
+          </div>
+        </div>
+        <div class="card">
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr><th>Adm No</th><th>Student</th><th>Subject</th><th>Score</th><th>Total</th><th>%</th><th>Grade</th><th>Date</th></tr></thead>
+              <tbody id="results-tbody"><tr><td colspan="8" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── AUDIT LOG ── -->
+      <div class="page" id="page-auditlog">
+        <div class="page-title">Audit Log</div>
+        <p class="page-sub">Track every administrative action — who did what and when</p>
+        <div class="card">
+          <div style="display:flex;flex-wrap:wrap;gap:10px;align-items:flex-end;margin-bottom:4px">
+            <div class="field" style="margin:0;flex:1;min-width:160px">
+              <label>Search</label>
+              <input type="text" id="al-search" placeholder="Name, target, detail…" oninput="loadAuditLog()"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:7px 12px;color:var(--text);font-family:var(--font);font-size:.82rem;width:100%"/>
+            </div>
+            <div class="field" style="margin:0;min-width:160px">
+              <label>Action Type</label>
+              <select id="al-filter-action" onchange="loadAuditLog()"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:.82rem">
+                <option value="">All Actions</option>
+              </select>
+            </div>
+            <div class="field" style="margin:0;min-width:130px">
+              <label>From Date</label>
+              <input type="date" id="al-date-from" onchange="loadAuditLog()"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:.82rem"/>
+            </div>
+            <div class="field" style="margin:0;min-width:130px">
+              <label>To Date</label>
+              <input type="date" id="al-date-to" onchange="loadAuditLog()"
+                style="background:#0d1626;border:1px solid var(--border);border-radius:8px;padding:7px 10px;color:var(--text);font-size:.82rem"/>
+            </div>
+            <button class="btn btn-ghost btn-sm" onclick="clearAuditFilters()">Clear</button>
+            <button class="btn btn-success btn-sm" onclick="exportAuditCSV()">⬇ Export CSV</button>
+          </div>
+          <div id="al-count" style="font-size:.78rem;color:var(--muted);margin-bottom:10px"></div>
+          <div class="tbl-wrap">
+            <table>
+              <thead><tr>
+                <th>#</th><th>Date &amp; Time</th><th>Actor</th>
+                <th>Action</th><th>Target</th><th>Detail</th><th>IP</th>
+              </tr></thead>
+              <tbody id="al-tbody"><tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">Loading…</td></tr></tbody>
+            </table>
+          </div>
+          <div style="display:flex;gap:8px;margin-top:12px;align-items:center" id="al-pagination"></div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main-layout -->
+</div><!-- /app -->
+
+<!-- ═══ RESET PASSWORD MODAL ═══ -->
+<div class="modal-bg" id="reset-pw-modal">
+  <div class="modal">
+    <div class="modal-title">🔑 Reset Student Password</div>
+    <input type="hidden" id="rp-student-id"/>
+    <div style="background:#0d1626;border:1px solid var(--border);border-radius:10px;padding:14px;margin-bottom:16px">
+      <div style="font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px">Student</div>
+      <div style="font-weight:600;font-size:.95rem" id="rp-student-name"></div>
+      <div style="font-family:var(--mono);color:var(--accent2);font-size:.82rem;margin-top:2px" id="rp-student-adm"></div>
+    </div>
+    <div class="field">
+      <label>New Password</label>
+      <input type="text" id="rp-new-pass" placeholder="Enter or generate a password (min 4 chars)" style="font-family:var(--mono)"/>
+    </div>
+    <div style="display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+      <button class="btn btn-ghost btn-sm" onclick="setResetPassPreset('adm')">📋 Use Adm No</button>
+      <button class="btn btn-ghost btn-sm" onclick="setResetPassPreset('default')">🔒 Use Default</button>
+      <button class="btn btn-warn btn-sm" onclick="adminGeneratePassword('rp-new-pass')">⚡ Generate</button>
+    </div>
+    <div id="rp-alert"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeResetModal()">Cancel</button>
+      <button class="btn btn-primary" id="rp-submit-btn" onclick="doResetPassword()">Reset Password →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══ EDIT QUESTION MODAL ═══ -->
+<div class="modal-bg" id="edit-modal">
+  <div class="modal">
+    <div class="modal-title">✏️ Edit Question</div>
+    <input type="hidden" id="eq-id"/>
+    <div class="field"><label>Question</label><textarea id="eq-question" rows="3"></textarea></div>
+    <div class="row2">
+      <div class="field"><label>Option 1</label><input type="text" id="eq-o1"/></div>
+      <div class="field"><label>Option 2</label><input type="text" id="eq-o2"/></div>
+      <div class="field"><label>Option 3</label><input type="text" id="eq-o3"/></div>
+      <div class="field"><label>Option 4</label><input type="text" id="eq-o4"/></div>
+    </div>
+    <div class="row2">
+      <div class="field"><label>Correct Option (1-4)</label><input type="number" id="eq-correct" min="1" max="4"/></div>
+      <div class="field"><label>Mark</label><input type="number" id="eq-mark" min="1"/></div>
+    </div>
+    <div id="eq-alert"></div>
+    <div style="display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveQuestion()">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const API = 'api.php';
+let subjectsData = [], studentsData = [], resultsData = [];
+
+// ── Utility ──────────────────────────────────────────────
+async function post(action, body){
+  const fd = body instanceof FormData ? body : (() => { const f=new FormData(); f.append('action',action); for(const [k,v] of Object.entries(body)) f.append(k,v); return f; })();
+  if(!(body instanceof FormData)) {} else { fd.append('action',action); }
+  const r = await fetch(API, {method:'POST', body:fd});
+  return r.json();
+}
+async function get(action, params={}){
+  const q = new URLSearchParams({action,...params});
+  const r = await fetch(`${API}?${q}`);
+  return r.json();
+}
+function setAlert(id, msg, type='err'){
+  const el=document.getElementById(id);
+  if(!msg){el.innerHTML='';return;}
+  el.innerHTML=`<div class="alert alert-${type}">${msg}</div>`;
+}
+function gradeClass(g){ return `g-${g}`; }
+function gradeBadge(g){ return `<span class="badge badge-${g}">${g}</span>`; }
+
+// ── Login ─────────────────────────────────────────────────
+async function doLogin(){
+  const email=document.getElementById('login-email').value.trim();
+  const pass=document.getElementById('login-pass').value;
+  if(!email||!pass){setAlert('login-alert','Please fill all fields.');return;}
+  const fd=new FormData(); fd.append('action','admin_login'); fd.append('email',email); fd.append('password',pass);
+  const r=await fetch(API,{method:'POST',body:fd}).then(x=>x.json());
+  if(r.ok){
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('app').style.display='flex';
+    document.getElementById('admin-name-badge').textContent=r.name;
+    initApp();
+  } else { setAlert('login-alert', r.msg||'Login failed.'); }
+}
+document.getElementById('login-pass').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin();});
+
+async function doLogout(){
+  await get('admin_logout');
+  location.reload();
+}
+
+// ── Navigation ────────────────────────────────────────────
+function showPage(name){
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(n=>{ if(n.getAttribute('onclick')?.includes(name)) n.classList.add('active'); });
+  if(name==='questions') loadQuestions();
+  if(name==='results')   loadResults();
+  if(name==='auditlog')  loadAuditLog();
+}
+
+// ── Init ──────────────────────────────────────────────────
+async function initApp(){
+  await loadSubjects();
+  await loadStats();
+  await loadStudentList();
+  populateSubjectDropdowns();
+}
+
+async function loadStats(){
+  const [subs,qs,sts,res] = await Promise.all([
+    get('get_subjects'),
+    get('get_questions',{subject_id:''}),
+    get('get_students'),
+    get('get_results'),
+  ]);
+  document.getElementById('stat-subjects').textContent  = subs.data?.length??'—';
+  document.getElementById('stat-questions').textContent = qs.data?.length??'—';
+  document.getElementById('stat-students').textContent  = sts.data?.length??'—';
+  document.getElementById('stat-results').textContent   = res.data?.length??'—';
+}
+
+// ── Subjects ──────────────────────────────────────────────
+async function loadSubjects(){
+  const r=await get('get_subjects');
+  subjectsData=r.data||[];
+  const tbody=document.getElementById('subjects-tbody');
+  if(!subjectsData.length){tbody.innerHTML='<tr><td colspan="5" style="color:var(--muted);text-align:center;padding:24px">No subjects yet.</td></tr>';return;}
+  tbody.innerHTML=subjectsData.map((s,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td style="font-weight:600">${s.name}</td>
+      <td><span style="font-family:var(--mono);background:var(--bg);padding:3px 8px;border-radius:5px;font-size:.8rem">${s.code}</span></td>
+      <td>${s.duration_minutes} min</td>
+      <td>
+        <span style="font-family:var(--mono);font-size:.85rem">${s.num_questions==0?'<span style=\"color:var(--muted)\">All</span>':s.num_questions}</span>
+        <button class="btn btn-ghost btn-sm" style="margin-left:6px" onclick="editNumQuestions(${s.id},${s.num_questions})">✏</button>
+      </td>
+      <td style="display:flex;gap:6px;flex-wrap:wrap">
+        <button class="btn btn-warn btn-sm" onclick="editDuration(${s.id},${s.duration_minutes})">⏱ Timer</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteSubject(${s.id},'${s.name}')">🗑 Delete</button>
+      </td>
+    </tr>`).join('');
+}
+
+async function addSubject(){
+  const name=document.getElementById('sub-name').value.trim();
+  const code=document.getElementById('sub-code').value.trim();
+  const dur=document.getElementById('sub-dur').value;
+  const numq=document.getElementById('sub-numq').value||'0';
+  if(!name||!code){setAlert('subject-alert','Name and code are required.');return;}
+  const r=await post('add_subject',{name,code,duration:dur,num_questions:numq});
+  setAlert('subject-alert',r.msg,r.ok?'ok':'err');
+  if(r.ok){
+    document.getElementById('sub-name').value='';
+    document.getElementById('sub-code').value='';
+    document.getElementById('sub-numq').value='0';
+    await loadSubjects();
+    populateSubjectDropdowns();
+    loadStats();
+  }
+}
+
+async function deleteSubject(id,name){
+  if(!confirm(`Delete subject "${name}" and ALL its questions/results?`)) return;
+  await post('delete_subject',{id});
+  await loadSubjects();
+  populateSubjectDropdowns();
+  loadStats();
+}
+
+async function editDuration(id,cur){
+  const val=prompt('Set new duration in minutes:',cur);
+  if(!val||isNaN(val)||val<1) return;
+  await post('update_subject_duration',{id,duration:val});
+  await loadSubjects();
+}
+
+async function editNumQuestions(id,cur){
+  const val=prompt('How many questions should students answer?\n(Enter 0 to use ALL questions in the bank)', cur);
+  if(val===null) return;
+  if(isNaN(val)||val<0){alert('Please enter a valid number (0 or more).');return;}
+  const r=await post('update_num_questions',{id,num_questions:parseInt(val)});
+  if(r.ok) await loadSubjects();
+  else alert(r.msg||'Update failed.');
+}
+
+function populateSubjectDropdowns(){
+  const ids=['q-subject-select','q-filter-subject','st-subject-select','res-subject-filter'];
+  ids.forEach(id=>{
+    const el=document.getElementById(id);
+    const keepFirst=el.options[0];
+    el.innerHTML='';
+    el.appendChild(keepFirst);
+    subjectsData.forEach(s=>{
+      const o=document.createElement('option');
+      o.value=s.id; o.textContent=`${s.name} (${s.code})`;
+      el.appendChild(o);
+    });
+  });
+}
+
+// ── Questions ─────────────────────────────────────────────
+async function loadQuestions(){
+  const sid=document.getElementById('q-filter-subject').value;
+  const r=await get('get_questions',{subject_id:sid});
+  const tbody=document.getElementById('questions-tbody');
+  if(!r.data||!r.data.length){
+    tbody.innerHTML=`<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">${sid?'No questions for this subject.':'Select a subject above.'}</td></tr>`;
+    return;
+  }
+  tbody.innerHTML=r.data.map((q,i)=>`
+    <tr>
+      <td>${i+1}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${q.subject_name}</td>
+      <td style="max-width:260px">${q.question.substring(0,80)}${q.question.length>80?'…':''}</td>
+      <td style="font-size:.75rem;color:var(--muted)">${q.option1} / ${q.option2} / ${q.option3} / ${q.option4}</td>
+      <td><span style="font-family:var(--mono);background:var(--success)22;color:var(--success);padding:3px 8px;border-radius:5px;font-size:.8rem">Opt ${q.correct_option}</span></td>
+      <td>${q.mark}</td>
+      <td style="display:flex;gap:6px">
+        <button class="btn btn-warn btn-sm" onclick="openEdit(${JSON.stringify(q).replace(/"/g,'&quot;')})">✏</button>
+        <button class="btn btn-danger btn-sm" onclick="deleteQuestion(${q.id})">🗑</button>
+      </td>
+    </tr>`).join('');
+}
+
+function handleCSV(input){
+  const sid=document.getElementById('q-subject-select').value;
+  if(!sid){setAlert('upload-alert','Please select a subject first.');input.value='';return;}
+  if(!input.files[0]) return;
+  setAlert('upload-alert','');
+  document.getElementById('upload-result').innerHTML='<span style="color:var(--muted)">Uploading…</span>';
+  const fd=new FormData();
+  fd.append('action','upload_questions');
+  fd.append('subject_id',sid);
+  fd.append('csv_file',input.files[0]);
+  fetch(API,{method:'POST',body:fd}).then(r=>r.json()).then(r=>{
+    const el=document.getElementById('upload-result');
+    if(r.ok){
+      let html=`<div class="alert alert-ok">✅ <strong>${r.inserted} question(s)</strong> uploaded successfully.</div>`;
+      if(r.errors?.length) html+=`<div class="alert alert-warn">⚠ Skipped rows:<br>${r.errors.join('<br>')}</div>`;
+      el.innerHTML=html;
+      loadStats();
+    } else {
+      el.innerHTML=`<div class="alert alert-err">${r.msg}</div>`;
+    }
+    input.value='';
+  });
+}
+
+async function deleteQuestion(id){
+  if(!confirm('Delete this question?')) return;
+  await post('delete_question',{id});
+  loadQuestions(); loadStats();
+}
+
+function openEdit(q){
+  document.getElementById('eq-id').value=q.id;
+  document.getElementById('eq-question').value=q.question;
+  document.getElementById('eq-o1').value=q.option1;
+  document.getElementById('eq-o2').value=q.option2;
+  document.getElementById('eq-o3').value=q.option3;
+  document.getElementById('eq-o4').value=q.option4;
+  document.getElementById('eq-correct').value=q.correct_option;
+  document.getElementById('eq-mark').value=q.mark;
+  setAlert('eq-alert','');
+  document.getElementById('edit-modal').classList.add('open');
+}
+function closeModal(){ document.getElementById('edit-modal').classList.remove('open'); }
+
+async function saveQuestion(){
+  const id=document.getElementById('eq-id').value;
+  const data={id,question:document.getElementById('eq-question').value,
+    option1:document.getElementById('eq-o1').value,option2:document.getElementById('eq-o2').value,
+    option3:document.getElementById('eq-o3').value,option4:document.getElementById('eq-o4').value,
+    correct_option:document.getElementById('eq-correct').value,mark:document.getElementById('eq-mark').value};
+  const r=await post('update_question',data);
+  if(r.ok){closeModal();loadQuestions();}
+  else setAlert('eq-alert',r.msg);
+}
+
+// ── Students ──────────────────────────────────────────────
+function handleStudentCSV(input){
+  const sid=document.getElementById('st-subject-select').value;
+  if(!sid){setAlert('student-upload-alert','Please select a subject first.');input.value='';return;}
+  if(!input.files[0]) return;
+  setAlert('student-upload-alert','');
+  document.getElementById('student-upload-result').innerHTML='<span style="color:var(--muted)">Uploading…</span>';
+  const fd=new FormData();
+  fd.append('action','batch_register_students');
+  fd.append('subject_id',sid);
+  fd.append('csv_file',input.files[0]);
+  fetch(API,{method:'POST',body:fd}).then(r=>r.json()).then(r=>{
+    const el=document.getElementById('student-upload-result');
+    if(r.ok){
+      let html=`<div class="alert alert-ok">✅ <strong>${r.inserted} student(s)</strong> registered/enrolled.</div>`;
+      if(r.errors?.length) html+=`<div class="alert alert-warn">⚠ Skipped:<br>${r.errors.join('<br>')}</div>`;
+      el.innerHTML=html;
+      loadStudentList(); loadStats();
+    } else { el.innerHTML=`<div class="alert alert-err">${r.msg}</div>`; }
+    input.value='';
+  });
+}
+
+async function loadStudentList(){
+  const r=await get('get_students');
+  studentsData=r.data||[];
+  // Populate result filter dropdown
+  const sel=document.getElementById('res-student-filter');
+  const first=sel.options[0];
+  sel.innerHTML=''; sel.appendChild(first);
+  studentsData.forEach(s=>{
+    const o=document.createElement('option');
+    o.value=s.id; o.textContent=`${s.admission_no} — ${s.name}`;
+    sel.appendChild(o);
+  });
+  // Populate full student table
+  renderStudentTable(studentsData);
+}
+
+function renderStudentTable(data){
+  const tbody=document.getElementById('all-students-tbody');
+  if(!tbody) return;
+  if(!data.length){
+    tbody.innerHTML='<tr><td colspan="6" style="color:var(--muted);text-align:center;padding:24px">No students registered yet.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=data.map((s,i)=>`
+    <tr>
+      <td style="color:var(--muted);font-size:.8rem">${i+1}</td>
+      <td style="font-family:var(--mono);font-size:.8rem">${s.admission_no}</td>
+      <td style="font-weight:600">${s.name}</td>
+      <td style="font-size:.82rem;color:var(--muted)">${s.email||'—'}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${s.created_at?.substring(0,10)||'—'}</td>
+      <td>
+        <button class="btn btn-warn btn-sm"
+          onclick="openResetModal(${s.id},'${s.name.replace(/'/g,"\\'")}','${s.admission_no}')">
+          🔑 Reset Password
+        </button>
+      </td>
+    </tr>`).join('');
+}
+
+function filterStudentTable(){
+  const q=document.getElementById('student-search').value.toLowerCase();
+  const filtered=studentsData.filter(s=>
+    s.name.toLowerCase().includes(q)||s.admission_no.toLowerCase().includes(q)
+  );
+  renderStudentTable(filtered);
+}
+
+// ── Reset password modal ───────────────────────────────────
+function adminGeneratePassword(inputId){
+  const chars='ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789@#!';
+  let p='';for(let i=0;i<10;i++) p+=chars[Math.floor(Math.random()*chars.length)];
+  document.getElementById(inputId).value=p;
+}
+function openResetModal(id, name, adm){
+  document.getElementById('rp-student-id').value=id;
+  document.getElementById('rp-student-name').textContent=name;
+  document.getElementById('rp-student-adm').textContent=adm;
+  document.getElementById('rp-new-pass').value=adm;
+  setAlert('rp-alert','');
+  document.getElementById('reset-pw-modal').classList.add('open');
+}
+function closeResetModal(){
+  document.getElementById('reset-pw-modal').classList.remove('open');
+}
+function setResetPassPreset(type){
+  const adm=document.getElementById('rp-student-adm').textContent;
+  document.getElementById('rp-new-pass').value = type==='adm' ? adm : 'password123';
+}
+async function doResetPassword(){
+  const id=document.getElementById('rp-student-id').value;
+  const pass=document.getElementById('rp-new-pass').value.trim();
+  if(!pass||pass.length<4){setAlert('rp-alert','Password must be at least 4 characters.');return;}
+  const btn=document.getElementById('rp-submit-btn');
+  btn.disabled=true; btn.textContent='Resetting…';
+  const r=await post('reset_student_password',{student_id:id,new_password:pass});
+  btn.disabled=false; btn.textContent='Reset Password →';
+  if(r.ok){
+    setAlert('rp-alert',`✅ Done. Student must change this on next login.<br>New password: <strong style="font-family:var(--mono);font-size:1rem">${pass}</strong>`,'ok');
+  } else {
+    setAlert('rp-alert',r.msg||'Reset failed.');
+  }
+}
+
+// ── Results ───────────────────────────────────────────────
+async function loadResults(){
+  const sid=document.getElementById('res-subject-filter').value;
+  const stid=document.getElementById('res-student-filter').value;
+  const r=await get('get_results',{subject_id:sid,student_id:stid});
+  resultsData=r.data||[];
+  const tbody=document.getElementById('results-tbody');
+  if(!resultsData.length){
+    tbody.innerHTML='<tr><td colspan="8" style="color:var(--muted);text-align:center;padding:24px">No results found.</td></tr>';
+    return;
+  }
+  tbody.innerHTML=resultsData.map(r=>{
+    const g=r.grade;
+    return `<tr>
+      <td style="font-family:var(--mono);font-size:.8rem">${r.admission_no}</td>
+      <td>${r.student_name}</td>
+      <td>${r.subject_name} <span style="font-size:.72rem;color:var(--muted)">(${r.code})</span></td>
+      <td>${r.score}</td><td>${r.total_marks}</td>
+      <td>${r.percentage}%</td>
+      <td class="${gradeClass(g)}" style="font-weight:700;font-family:var(--mono)">${g}</td>
+      <td style="font-size:.78rem;color:var(--muted)">${r.submitted_at?.substring(0,10)||'—'}</td>
+    </tr>`;
+  }).join('');
+}
+
+function exportResultsCSV(){
+  if(!resultsData.length){alert('No results to export.');return;}
+  const header='Adm No,Name,Subject,Code,Score,Total,Percentage,Grade,Date\n';
+  const rows=resultsData.map(r=>
+    `"${r.admission_no}","${r.student_name}","${r.subject_name}","${r.code}",${r.score},${r.total_marks},${r.percentage},${r.grade},"${r.submitted_at?.substring(0,10)||''}"`
+  ).join('\n');
+  const blob=new Blob([header+rows],{type:'text/csv'});
+  const a=document.createElement('a');
+  a.href=URL.createObjectURL(blob);
+  a.download='results_export.csv';
+  a.click();
+}
+
+// Close modal on background click
+document.getElementById('edit-modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+document.getElementById('reset-pw-modal').addEventListener('click',function(e){if(e.target===this)closeResetModal();});
+
+// ══════════════════════════════════════
+//  AUDIT LOG
+// ══════════════════════════════════════
+let auditPage=0;
+const AUDIT_PAGE_SIZE=100;
+const ACTION_COLORS={
+  'Login':'#16a34a','Logout':'#64748b',
+  'Add Subject':'#4f46e5','Delete Subject':'#dc2626','Update Subject Duration':'#0ea5e9','Update Questions Per Quiz':'#0ea5e9',
+  'Upload Questions':'#7c3aed','Delete Question':'#dc2626','Edit Question':'#d97706',
+  'Batch Register Students':'#0891b2','Reset Student Password':'#ea580c',
+  'Add Lecturer':'#4f46e5','Delete Lecturer':'#dc2626','Enabled Lecturer':'#16a34a','Disabled Lecturer':'#9333ea',
+  'Reset Lecturer Password':'#ea580c','Assign Subjects':'#0ea5e9',
+  'Start Quiz':'#0891b2','Submit Quiz':'#16a34a','Change Password':'#d97706',
+};
+function actionBadge(a){
+  const c=ACTION_COLORS[a]||'#64748b';
+  return `<span style="background:${c}22;color:${c};padding:2px 9px;border-radius:20px;font-size:.72rem;font-weight:700;white-space:nowrap">${a}</span>`;
+}
+async function loadAuditLog(resetPage=true){
+  if(resetPage) auditPage=0;
+  const search=document.getElementById('al-search').value.trim();
+  const filterAction=document.getElementById('al-filter-action').value;
+  const dateFrom=document.getElementById('al-date-from').value;
+  const dateTo=document.getElementById('al-date-to').value;
+  const tbody=document.getElementById('al-tbody');
+  tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:20px">Loading…</td></tr>';
+  const r=await get('get_audit_logs',{limit:AUDIT_PAGE_SIZE,offset:auditPage*AUDIT_PAGE_SIZE,search,filter_action:filterAction,date_from:dateFrom,date_to:dateTo});
+  if(!r.ok){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:20px">Failed to load.</td></tr>';return;}
+  const sel=document.getElementById('al-filter-action');
+  if(sel.options.length<=1&&r.actions?.length){
+    r.actions.forEach(a=>{const o=document.createElement('option');o.value=a;o.textContent=a;sel.appendChild(o);});
+    if(filterAction) sel.value=filterAction;
+  }
+  document.getElementById('al-count').textContent=`Showing ${r.data.length} of ${r.total} entries${search||filterAction||dateFrom||dateTo?' (filtered)':''}`;
+  if(!r.data.length){tbody.innerHTML='<tr><td colspan="7" style="color:var(--muted);text-align:center;padding:24px">No log entries found.</td></tr>';document.getElementById('al-pagination').innerHTML='';return;}
+  tbody.innerHTML=r.data.map((row,i)=>`<tr>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);color:var(--muted);font-size:.75rem">${auditPage*AUDIT_PAGE_SIZE+i+1}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.75rem;white-space:nowrap">${row.created_at?.replace('T',' ').substring(0,19)||'—'}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);font-weight:600;font-size:.84rem">${row.actor_name}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border)">${actionBadge(row.action)}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);font-size:.82rem">${row.target||'—'}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);font-size:.78rem;color:var(--muted);max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${row.detail||'—'}</td>
+    <td style="padding:9px 12px;border-top:1px solid var(--border);font-family:var(--mono);font-size:.72rem;color:var(--muted)">${row.ip||'—'}</td>
+  </tr>`).join('');
+  const totalPages=Math.ceil(r.total/AUDIT_PAGE_SIZE);
+  const pg=document.getElementById('al-pagination');
+  if(totalPages<=1){pg.innerHTML='';return;}
+  pg.innerHTML=`<button class="btn btn-ghost btn-sm" ${auditPage===0?'disabled':''} onclick="auditPage--;loadAuditLog(false)">← Prev</button>
+    <span style="font-size:.82rem;color:var(--muted)">Page ${auditPage+1} of ${totalPages}</span>
+    <button class="btn btn-ghost btn-sm" ${auditPage>=totalPages-1?'disabled':''} onclick="auditPage++;loadAuditLog(false)">Next →</button>`;
+}
+function clearAuditFilters(){
+  document.getElementById('al-search').value='';
+  document.getElementById('al-filter-action').value='';
+  document.getElementById('al-date-from').value='';
+  document.getElementById('al-date-to').value='';
+  loadAuditLog();
+}
+function exportAuditCSV(){
+  const rows=[['#','Date & Time','Actor','Action','Target','Detail','IP']];
+  document.querySelectorAll('#al-tbody tr').forEach((tr,i)=>{
+    const cells=[...tr.querySelectorAll('td')].map(td=>'"'+td.textContent.replace(/"/g,'""')+'"');
+    if(cells.length>1) rows.push(cells);
+  });
+  const csv=rows.map(r=>r.join(',')).join('\n');
+  const a=document.createElement('a');
+  a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
+  a.download='audit_log_'+new Date().toISOString().substring(0,10)+'.csv';
+  a.click();
+}
+</script>
+</body>
+</html>
