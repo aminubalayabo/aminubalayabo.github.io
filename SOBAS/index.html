@@ -44,7 +44,7 @@
      <a href="#" id="logoutLink">Logout</a>
     </div>
 </cnter>
-    <marquee><h3><span class="orange" style="color:rgb(221, 135, 222)";> For enquiries, please send a mail to aminubala@gmail.com! Thank you </span></h3></marquee>
+    <marquee><h3><span class="orange" style="color:rgb(221, 135, 222)";> Pls Upload your O Level Results and Check the School Noticeboard for Your Placement! Thank you </span></h3></marquee>
     <script>
         async function login() {
             const username = document.getElementById('username').value;
@@ -71,7 +71,7 @@
         }
 
         function displayResults(name, scores) {
-            const subjects = ['BIO', 'CHEM', 'ENG', 'MATHS', 'PHY'];
+            const subjects = ['BIO/IRS', 'CHEM/ECONS', 'ENG', 'MATHS', 'PHY/GOVT'];
             const numericScores = scores.map(Number);
             const total = numericScores.reduce((a, b) => a + b, 0);
             const average = total / numericScores.length;
